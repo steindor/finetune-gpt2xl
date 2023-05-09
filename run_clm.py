@@ -28,7 +28,7 @@ from transformers.trainer_utils import get_last_checkpoint, is_main_process
 from transformers.utils import check_min_version
 
 
-logging.basicConfig(level=logging.WARNING)
+logging.getLogger("transformers").setLevel(logging.WARNING)
 
 
 def generate_cloze_sample(prompt, model, tokenizer, max_new_tokens=5):

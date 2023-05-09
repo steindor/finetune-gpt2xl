@@ -1,0 +1,2840 @@
+[2023-05-09 23:02:20,890] [WARNING] [runner.py:190:fetch_hostfile] Unable to find hostfile, will proceed with training with local resources only.
+Detected CUDA_VISIBLE_DEVICES=0: setting --include=localhost:0
+[2023-05-09 23:02:20,900] [INFO] [runner.py:540:main] cmd = /home/stefanola/anaconda3/envs/huggingface/bin/python -u -m deepspeed.launcher.launch --world_info=eyJsb2NhbGhvc3QiOiBbMF19 --master_addr=127.0.0.1 --master_port=29500 --enable_each_rank_log=None run_clm.py --deepspeed ds_config.json --model_name_or_path bigscience/bloom-560m --train_file train.csv --validation_file validation.csv --max_train_samples 12000 --max_val_samples 500 --do_train --do_eval --fp16 --overwrite_cache --evaluation_strategy=steps --output_dir b560ftrmh1e --eval_steps 100 --num_train_epochs 1 --gradient_accumulation_steps 2 --per_device_train_batch_size 12
+[2023-05-09 23:02:22,805] [INFO] [launch.py:229:main] WORLD INFO DICT: {'localhost': [0]}
+[2023-05-09 23:02:22,805] [INFO] [launch.py:235:main] nnodes=1, num_local_procs=1, node_rank=0
+[2023-05-09 23:02:22,805] [INFO] [launch.py:246:main] global_rank_mapping=defaultdict(<class 'list'>, {'localhost': [0]})
+[2023-05-09 23:02:22,805] [INFO] [launch.py:247:main] dist_world_size=1
+[2023-05-09 23:02:22,805] [INFO] [launch.py:249:main] Setting CUDA_VISIBLE_DEVICES=0
+05/09/2023 23:02:25 - WARNING - __main__ -   Process rank: 0, device: cuda:0, n_gpu: 1distributed training: True, 16-bits training: True
+05/09/2023 23:02:25 - INFO - __main__ -   Training/evaluation parameters TrainingArguments(
+_n_gpu=1,
+adafactor=False,
+adam_beta1=0.9,
+adam_beta2=0.999,
+adam_epsilon=1e-08,
+auto_find_batch_size=False,
+bf16=False,
+bf16_full_eval=False,
+data_seed=None,
+dataloader_drop_last=False,
+dataloader_num_workers=0,
+dataloader_pin_memory=True,
+ddp_backend=None,
+ddp_bucket_cap_mb=None,
+ddp_find_unused_parameters=None,
+ddp_timeout=1800,
+debug=[],
+deepspeed=ds_config.json,
+disable_tqdm=False,
+do_eval=True,
+do_predict=False,
+do_train=True,
+eval_accumulation_steps=None,
+eval_delay=0,
+eval_steps=100,
+evaluation_strategy=steps,
+fp16=True,
+fp16_backend=auto,
+fp16_full_eval=False,
+fp16_opt_level=O1,
+fsdp=[],
+fsdp_config={'fsdp_min_num_params': 0, 'xla': False, 'xla_fsdp_grad_ckpt': False},
+fsdp_min_num_params=0,
+fsdp_transformer_layer_cls_to_wrap=None,
+full_determinism=False,
+gradient_accumulation_steps=2,
+gradient_checkpointing=False,
+greater_is_better=None,
+group_by_length=False,
+half_precision_backend=auto,
+hub_model_id=None,
+hub_private_repo=False,
+hub_strategy=every_save,
+hub_token=<HUB_TOKEN>,
+ignore_data_skip=False,
+include_inputs_for_metrics=False,
+jit_mode_eval=False,
+label_names=None,
+label_smoothing_factor=0.0,
+learning_rate=5e-05,
+length_column_name=length,
+load_best_model_at_end=False,
+local_rank=0,
+log_level=passive,
+log_level_replica=warning,
+log_on_each_node=True,
+logging_dir=b560ftrmh1e/runs/May09_23-02-25_obelix,
+logging_first_step=False,
+logging_nan_inf_filter=True,
+logging_steps=500,
+logging_strategy=steps,
+lr_scheduler_type=linear,
+max_grad_norm=1.0,
+max_steps=-1,
+metric_for_best_model=None,
+mp_parameters=,
+no_cuda=False,
+num_train_epochs=1.0,
+optim=adamw_hf,
+optim_args=None,
+output_dir=b560ftrmh1e,
+overwrite_output_dir=False,
+past_index=-1,
+per_device_eval_batch_size=8,
+per_device_train_batch_size=12,
+prediction_loss_only=False,
+push_to_hub=False,
+push_to_hub_model_id=None,
+push_to_hub_organization=None,
+push_to_hub_token=<PUSH_TO_HUB_TOKEN>,
+ray_scope=last,
+remove_unused_columns=True,
+report_to=[],
+resume_from_checkpoint=None,
+run_name=b560ftrmh1e,
+save_on_each_node=False,
+save_safetensors=False,
+save_steps=500,
+save_strategy=steps,
+save_total_limit=None,
+seed=42,
+sharded_ddp=[],
+skip_memory_metrics=True,
+tf32=None,
+torch_compile=False,
+torch_compile_backend=None,
+torch_compile_mode=None,
+torchdynamo=None,
+tpu_metrics_debug=False,
+tpu_num_cores=None,
+use_ipex=False,
+use_legacy_prediction_loop=False,
+use_mps_device=False,
+warmup_ratio=0.0,
+warmup_steps=0,
+weight_decay=0.0,
+xpu_backend=None,
+)
+[INFO|configuration_utils.py:669] 2023-05-09 23:02:36,037 >> loading configuration file config.json from cache at /home/stefanola/.cache/huggingface/hub/models--bigscience--bloom-560m/snapshots/e985a63cdc139290c5f700ff1929f0b5942cced2/config.json
+[INFO|configuration_utils.py:725] 2023-05-09 23:02:36,038 >> Model config BloomConfig {
+  "_name_or_path": "bigscience/bloom-560m",
+  "apply_residual_connection_post_layernorm": false,
+  "architectures": [
+    "BloomForCausalLM"
+  ],
+  "attention_dropout": 0.0,
+  "attention_softmax_in_fp32": true,
+  "bias_dropout_fusion": true,
+  "bos_token_id": 1,
+  "eos_token_id": 2,
+  "hidden_dropout": 0.0,
+  "hidden_size": 1024,
+  "initializer_range": 0.02,
+  "layer_norm_epsilon": 1e-05,
+  "masked_softmax_fusion": true,
+  "model_type": "bloom",
+  "n_head": 16,
+  "n_inner": null,
+  "n_layer": 24,
+  "offset_alibi": 100,
+  "pad_token_id": 3,
+  "pretraining_tp": 1,
+  "skip_bias_add": true,
+  "skip_bias_add_qkv": false,
+  "slow_but_exact": false,
+  "transformers_version": "4.29.0.dev0",
+  "unk_token_id": 0,
+  "use_cache": true,
+  "vocab_size": 250880
+}
+
+[INFO|tokenization_utils_base.py:1810] 2023-05-09 23:02:36,521 >> loading file tokenizer.json from cache at /home/stefanola/.cache/huggingface/hub/models--bigscience--bloom-560m/snapshots/e985a63cdc139290c5f700ff1929f0b5942cced2/tokenizer.json
+[INFO|tokenization_utils_base.py:1810] 2023-05-09 23:02:36,521 >> loading file added_tokens.json from cache at None
+[INFO|tokenization_utils_base.py:1810] 2023-05-09 23:02:36,521 >> loading file special_tokens_map.json from cache at /home/stefanola/.cache/huggingface/hub/models--bigscience--bloom-560m/snapshots/e985a63cdc139290c5f700ff1929f0b5942cced2/special_tokens_map.json
+[INFO|tokenization_utils_base.py:1810] 2023-05-09 23:02:36,521 >> loading file tokenizer_config.json from cache at /home/stefanola/.cache/huggingface/hub/models--bigscience--bloom-560m/snapshots/e985a63cdc139290c5f700ff1929f0b5942cced2/tokenizer_config.json
+[ERROR|tokenization_utils_base.py:1067] 2023-05-09 23:02:36,947 >> Using mask_token, but it is not set yet.
+[INFO|modeling_utils.py:2542] 2023-05-09 23:02:36,953 >> loading weights file pytorch_model.bin from cache at /home/stefanola/.cache/huggingface/hub/models--bigscience--bloom-560m/snapshots/e985a63cdc139290c5f700ff1929f0b5942cced2/pytorch_model.bin
+[INFO|configuration_utils.py:577] 2023-05-09 23:02:37,593 >> Generate config GenerationConfig {
+  "_from_model_config": true,
+  "bos_token_id": 1,
+  "eos_token_id": 2,
+  "pad_token_id": 3,
+  "transformers_version": "4.29.0.dev0",
+  "use_cache": false
+}
+
+[INFO|modeling_utils.py:3211] 2023-05-09 23:02:44,279 >> All model checkpoint weights were used when initializing BloomForCausalLM.
+
+[INFO|modeling_utils.py:3219] 2023-05-09 23:02:44,280 >> All the weights of BloomForCausalLM were initialized from the model checkpoint at bigscience/bloom-560m.
+If your task is similar to the task the model of the checkpoint was trained on, you can already use BloomForCausalLM for predictions without further training.
+[INFO|modeling_utils.py:2847] 2023-05-09 23:02:44,444 >> Generation config file not found, using a generation config created from the model config.
+05/09/2023 23:03:04 - WARNING - datasets.builder -   Found cached dataset parquet (/home/stefanola/.cache/huggingface/datasets/stoddur___parquet/stoddur--rmh_tokenized_512-ace390aa84346e55/0.0.0/2a3b91fbd88a2c90d1dbbb32b460cf621d31bd5b05b934492fdef7d8d6f236ec)
+
+  0%|          | 0/2 [00:00<?, ?it/s]
+ 50%|█████     | 1/2 [00:47<00:47, 47.35s/it]
+100%|██████████| 2/2 [00:48<00:00, 20.18s/it]
+100%|██████████| 2/2 [00:48<00:00, 24.25s/it]
+[INFO|trainer.py:622] 2023-05-09 23:03:52,961 >> Using cuda_amp half precision backend
+[2023-05-09 23:03:52,968] [INFO] [logging.py:96:log_dist] [Rank -1] DeepSpeed info: version=0.9.1, git-hash=unknown, git-branch=unknown
+[2023-05-09 23:03:52,969] [WARNING] [config_utils.py:69:_process_deprecated_field] Config parameter cpu_offload is deprecated use offload_optimizer instead
+[2023-05-09 23:03:54,860] [INFO] [logging.py:96:log_dist] [Rank 0] DeepSpeed Flops Profiler Enabled: False
+Using /home/stefanola/.cache/torch_extensions/py38_cu117 as PyTorch extensions root...
+Detected CUDA files, patching ldflags
+Emitting ninja build file /home/stefanola/.cache/torch_extensions/py38_cu117/cpu_adam/build.ninja...
+Building extension module cpu_adam...
+Allowing ninja to set a default number of workers... (overridable by setting the environment variable MAX_JOBS=N)
+ninja: no work to do.
+Loading extension module cpu_adam...
+Time to load cpu_adam op: 2.6672186851501465 seconds
+Adam Optimizer #0 is created with AVX512 arithmetic capability.
+Config: alpha=0.000050, betas=(0.900000, 0.999000), weight_decay=0.000000, adam_w=1
+[2023-05-09 23:04:00,390] [INFO] [logging.py:96:log_dist] [Rank 0] Using DeepSpeed Optimizer param name adamw as basic optimizer
+[2023-05-09 23:04:00,401] [INFO] [logging.py:96:log_dist] [Rank 0] DeepSpeed Basic Optimizer = DeepSpeedCPUAdam
+[2023-05-09 23:04:00,402] [INFO] [utils.py:51:is_zero_supported_optimizer] Checking ZeRO support for optimizer=DeepSpeedCPUAdam type=<class 'deepspeed.ops.adam.cpu_adam.DeepSpeedCPUAdam'>
+[2023-05-09 23:04:00,402] [INFO] [logging.py:96:log_dist] [Rank 0] Creating torch.float16 ZeRO stage 2 optimizer
+[2023-05-09 23:04:00,402] [INFO] [stage_1_and_2.py:133:__init__] Reduce bucket size 200000000
+[2023-05-09 23:04:00,402] [INFO] [stage_1_and_2.py:134:__init__] Allgather bucket size 200000000
+[2023-05-09 23:04:00,402] [INFO] [stage_1_and_2.py:135:__init__] CPU Offload: True
+[2023-05-09 23:04:00,402] [INFO] [stage_1_and_2.py:136:__init__] Round robin gradient partitioning: False
+Using /home/stefanola/.cache/torch_extensions/py38_cu117 as PyTorch extensions root...
+Emitting ninja build file /home/stefanola/.cache/torch_extensions/py38_cu117/utils/build.ninja...
+Building extension module utils...
+Allowing ninja to set a default number of workers... (overridable by setting the environment variable MAX_JOBS=N)
+ninja: no work to do.
+Loading extension module utils...
+Time to load utils op: 0.22150135040283203 seconds
+Rank: 0 partition count [1] and sizes[(559009792, False)] 
+[2023-05-09 23:04:04,955] [INFO] [utils.py:785:see_memory_usage] Before initializing optimizer states
+[2023-05-09 23:04:04,956] [INFO] [utils.py:786:see_memory_usage] MA 1.52 GB         Max_MA 1.52 GB         CA 1.52 GB         Max_CA 2 GB 
+[2023-05-09 23:04:04,956] [INFO] [utils.py:793:see_memory_usage] CPU Virtual Memory:  used = 7.56 GB, percent = 16.1%
+[2023-05-09 23:04:10,780] [INFO] [utils.py:785:see_memory_usage] After initializing optimizer states
+[2023-05-09 23:04:10,780] [INFO] [utils.py:786:see_memory_usage] MA 1.52 GB         Max_MA 1.52 GB         CA 1.52 GB         Max_CA 2 GB 
+[2023-05-09 23:04:10,781] [INFO] [utils.py:793:see_memory_usage] CPU Virtual Memory:  used = 15.81 GB, percent = 33.6%
+[2023-05-09 23:04:10,781] [INFO] [stage_1_and_2.py:489:__init__] optimizer state initialized
+[2023-05-09 23:04:10,862] [INFO] [utils.py:785:see_memory_usage] After initializing ZeRO optimizer
+[2023-05-09 23:04:10,863] [INFO] [utils.py:786:see_memory_usage] MA 1.52 GB         Max_MA 1.52 GB         CA 1.52 GB         Max_CA 2 GB 
+[2023-05-09 23:04:10,863] [INFO] [utils.py:793:see_memory_usage] CPU Virtual Memory:  used = 15.81 GB, percent = 33.6%
+[2023-05-09 23:04:10,872] [INFO] [logging.py:96:log_dist] [Rank 0] DeepSpeed Final Optimizer = adamw
+[2023-05-09 23:04:10,872] [INFO] [logging.py:96:log_dist] [Rank 0] DeepSpeed using configured LR scheduler = WarmupLR
+[2023-05-09 23:04:10,872] [INFO] [logging.py:96:log_dist] [Rank 0] DeepSpeed LR Scheduler = <deepspeed.runtime.lr_schedules.WarmupLR object at 0x7f9d48c42340>
+[2023-05-09 23:04:10,872] [INFO] [logging.py:96:log_dist] [Rank 0] step=0, skipped=0, lr=[5e-05], mom=[[0.9, 0.999]]
+[2023-05-09 23:04:10,872] [INFO] [config.py:953:print] DeepSpeedEngine configuration:
+[2023-05-09 23:04:10,873] [INFO] [config.py:957:print]   activation_checkpointing_config  {
+    "partition_activations": false, 
+    "contiguous_memory_optimization": false, 
+    "cpu_checkpointing": false, 
+    "number_checkpoints": null, 
+    "synchronize_checkpoint_boundary": false, 
+    "profile": false
+}
+[2023-05-09 23:04:10,873] [INFO] [config.py:957:print]   aio_config ................... {'block_size': 1048576, 'queue_depth': 8, 'thread_count': 1, 'single_submit': False, 'overlap_events': True}
+[2023-05-09 23:04:10,873] [INFO] [config.py:957:print]   amp_enabled .................. False
+[2023-05-09 23:04:10,873] [INFO] [config.py:957:print]   amp_params ................... False
+[2023-05-09 23:04:10,873] [INFO] [config.py:957:print]   autotuning_config ............ {
+    "enabled": false, 
+    "start_step": null, 
+    "end_step": null, 
+    "metric_path": null, 
+    "arg_mappings": null, 
+    "metric": "throughput", 
+    "model_info": null, 
+    "results_dir": "autotuning_results", 
+    "exps_dir": "autotuning_exps", 
+    "overwrite": true, 
+    "fast": true, 
+    "start_profile_step": 3, 
+    "end_profile_step": 5, 
+    "tuner_type": "gridsearch", 
+    "tuner_early_stopping": 5, 
+    "tuner_num_trials": 50, 
+    "model_info_path": null, 
+    "mp_size": 1, 
+    "max_train_batch_size": null, 
+    "min_train_batch_size": 1, 
+    "max_train_micro_batch_size_per_gpu": 1.024000e+03, 
+    "min_train_micro_batch_size_per_gpu": 1, 
+    "num_tuning_micro_batch_sizes": 3
+}
+[2023-05-09 23:04:10,873] [INFO] [config.py:957:print]   bfloat16_enabled ............. False
+[2023-05-09 23:04:10,873] [INFO] [config.py:957:print]   checkpoint_parallel_write_pipeline  False
+[2023-05-09 23:04:10,873] [INFO] [config.py:957:print]   checkpoint_tag_validation_enabled  True
+[2023-05-09 23:04:10,873] [INFO] [config.py:957:print]   checkpoint_tag_validation_fail  False
+[2023-05-09 23:04:10,873] [INFO] [config.py:957:print]   comms_config ................. <deepspeed.comm.config.DeepSpeedCommsConfig object at 0x7f9d4819c100>
+[2023-05-09 23:04:10,873] [INFO] [config.py:957:print]   communication_data_type ...... None
+[2023-05-09 23:04:10,873] [INFO] [config.py:957:print]   compression_config ........... {'weight_quantization': {'shared_parameters': {'enabled': False, 'quantizer_kernel': False, 'schedule_offset': 0, 'quantize_groups': 1, 'quantize_verbose': False, 'quantization_type': 'symmetric', 'quantize_weight_in_forward': False, 'rounding': 'nearest', 'fp16_mixed_quantize': False, 'quantize_change_ratio': 0.001}, 'different_groups': {}}, 'activation_quantization': {'shared_parameters': {'enabled': False, 'quantization_type': 'symmetric', 'range_calibration': 'dynamic', 'schedule_offset': 1000}, 'different_groups': {}}, 'sparse_pruning': {'shared_parameters': {'enabled': False, 'method': 'l1', 'schedule_offset': 1000}, 'different_groups': {}}, 'row_pruning': {'shared_parameters': {'enabled': False, 'method': 'l1', 'schedule_offset': 1000}, 'different_groups': {}}, 'head_pruning': {'shared_parameters': {'enabled': False, 'method': 'topk', 'schedule_offset': 1000}, 'different_groups': {}}, 'channel_pruning': {'shared_parameters': {'enabled': False, 'method': 'l1', 'schedule_offset': 1000}, 'different_groups': {}}, 'layer_reduction': {'enabled': False}}
+[2023-05-09 23:04:10,873] [INFO] [config.py:957:print]   curriculum_enabled_legacy .... False
+[2023-05-09 23:04:10,873] [INFO] [config.py:957:print]   curriculum_params_legacy ..... False
+[2023-05-09 23:04:10,873] [INFO] [config.py:957:print]   data_efficiency_config ....... {'enabled': False, 'seed': 1234, 'data_sampling': {'enabled': False, 'num_epochs': 1000, 'num_workers': 0, 'curriculum_learning': {'enabled': False}}, 'data_routing': {'enabled': False, 'random_ltd': {'enabled': False, 'layer_token_lr_schedule': {'enabled': False}}}}
+[2023-05-09 23:04:10,873] [INFO] [config.py:957:print]   data_efficiency_enabled ...... False
+[2023-05-09 23:04:10,873] [INFO] [config.py:957:print]   dataloader_drop_last ......... False
+[2023-05-09 23:04:10,873] [INFO] [config.py:957:print]   disable_allgather ............ False
+[2023-05-09 23:04:10,873] [INFO] [config.py:957:print]   dump_state ................... False
+[2023-05-09 23:04:10,873] [INFO] [config.py:957:print]   dynamic_loss_scale_args ...... {'init_scale': 65536, 'scale_window': 1000, 'delayed_shift': 2, 'min_scale': 1}
+[2023-05-09 23:04:10,873] [INFO] [config.py:957:print]   eigenvalue_enabled ........... False
+[2023-05-09 23:04:10,873] [INFO] [config.py:957:print]   eigenvalue_gas_boundary_resolution  1
+[2023-05-09 23:04:10,873] [INFO] [config.py:957:print]   eigenvalue_layer_name ........ bert.encoder.layer
+[2023-05-09 23:04:10,873] [INFO] [config.py:957:print]   eigenvalue_layer_num ......... 0
+[2023-05-09 23:04:10,873] [INFO] [config.py:957:print]   eigenvalue_max_iter .......... 100
+[2023-05-09 23:04:10,873] [INFO] [config.py:957:print]   eigenvalue_stability ......... 1e-06
+[2023-05-09 23:04:10,873] [INFO] [config.py:957:print]   eigenvalue_tol ............... 0.01
+[2023-05-09 23:04:10,873] [INFO] [config.py:957:print]   eigenvalue_verbose ........... False
+[2023-05-09 23:04:10,874] [INFO] [config.py:957:print]   elasticity_enabled ........... False
+[2023-05-09 23:04:10,874] [INFO] [config.py:957:print]   flops_profiler_config ........ {
+    "enabled": false, 
+    "profile_step": 1, 
+    "module_depth": -1, 
+    "top_modules": 1, 
+    "detailed": true, 
+    "output_file": null
+}
+[2023-05-09 23:04:10,874] [INFO] [config.py:957:print]   fp16_auto_cast ............... False
+[2023-05-09 23:04:10,874] [INFO] [config.py:957:print]   fp16_enabled ................. True
+[2023-05-09 23:04:10,874] [INFO] [config.py:957:print]   fp16_master_weights_and_gradients  False
+[2023-05-09 23:04:10,874] [INFO] [config.py:957:print]   global_rank .................. 0
+[2023-05-09 23:04:10,874] [INFO] [config.py:957:print]   grad_accum_dtype ............. None
+[2023-05-09 23:04:10,874] [INFO] [config.py:957:print]   gradient_accumulation_steps .. 2
+[2023-05-09 23:04:10,874] [INFO] [config.py:957:print]   gradient_clipping ............ 1.0
+[2023-05-09 23:04:10,874] [INFO] [config.py:957:print]   gradient_predivide_factor .... 1.0
+[2023-05-09 23:04:10,874] [INFO] [config.py:957:print]   hybrid_engine ................ enabled=False max_out_tokens=512 inference_tp_size=1 release_inference_cache=False pin_parameters=True tp_gather_partition_size=8
+[2023-05-09 23:04:10,874] [INFO] [config.py:957:print]   initial_dynamic_scale ........ 65536
+[2023-05-09 23:04:10,874] [INFO] [config.py:957:print]   load_universal_checkpoint .... False
+[2023-05-09 23:04:10,874] [INFO] [config.py:957:print]   loss_scale ................... 0
+[2023-05-09 23:04:10,874] [INFO] [config.py:957:print]   memory_breakdown ............. False
+[2023-05-09 23:04:10,874] [INFO] [config.py:957:print]   monitor_config ............... tensorboard=TensorBoardConfig(enabled=False, output_path='', job_name='DeepSpeedJobName') wandb=WandbConfig(enabled=False, group=None, team=None, project='deepspeed') csv_monitor=CSVConfig(enabled=False, output_path='', job_name='DeepSpeedJobName') enabled=False
+[2023-05-09 23:04:10,874] [INFO] [config.py:957:print]   nebula_config ................ {
+    "enabled": false, 
+    "persistent_storage_path": null, 
+    "persistent_time_interval": 100, 
+    "num_of_version_in_retention": 2, 
+    "enable_nebula_load": true, 
+    "load_path": null
+}
+[2023-05-09 23:04:10,874] [INFO] [config.py:957:print]   optimizer_legacy_fusion ...... False
+[2023-05-09 23:04:10,874] [INFO] [config.py:957:print]   optimizer_name ............... adamw
+[2023-05-09 23:04:10,874] [INFO] [config.py:957:print]   optimizer_params ............. {'lr': 5e-05, 'betas': [0.9, 0.999], 'eps': 1e-08, 'weight_decay': 0.0}
+[2023-05-09 23:04:10,874] [INFO] [config.py:957:print]   pipeline ..................... {'stages': 'auto', 'partition': 'best', 'seed_layers': False, 'activation_checkpoint_interval': 0}
+[2023-05-09 23:04:10,874] [INFO] [config.py:957:print]   pld_enabled .................. False
+[2023-05-09 23:04:10,874] [INFO] [config.py:957:print]   pld_params ................... False
+[2023-05-09 23:04:10,874] [INFO] [config.py:957:print]   prescale_gradients ........... False
+[2023-05-09 23:04:10,874] [INFO] [config.py:957:print]   scheduler_name ............... WarmupLR
+[2023-05-09 23:04:10,874] [INFO] [config.py:957:print]   scheduler_params ............. {'warmup_min_lr': 0, 'warmup_max_lr': 5e-05, 'warmup_num_steps': 0}
+[2023-05-09 23:04:10,874] [INFO] [config.py:957:print]   sparse_attention ............. None
+[2023-05-09 23:04:10,874] [INFO] [config.py:957:print]   sparse_gradients_enabled ..... False
+[2023-05-09 23:04:10,874] [INFO] [config.py:957:print]   steps_per_print .............. 2000
+[2023-05-09 23:04:10,874] [INFO] [config.py:957:print]   train_batch_size ............. 24
+[2023-05-09 23:04:10,874] [INFO] [config.py:957:print]   train_micro_batch_size_per_gpu  12
+[2023-05-09 23:04:10,874] [INFO] [config.py:957:print]   use_node_local_storage ....... False
+[2023-05-09 23:04:10,874] [INFO] [config.py:957:print]   wall_clock_breakdown ......... False
+[2023-05-09 23:04:10,874] [INFO] [config.py:957:print]   world_size ................... 1
+[2023-05-09 23:04:10,874] [INFO] [config.py:957:print]   zero_allow_untested_optimizer  False
+[2023-05-09 23:04:10,874] [INFO] [config.py:957:print]   zero_config .................. stage=2 contiguous_gradients=True reduce_scatter=True reduce_bucket_size=200000000 allgather_partitions=True allgather_bucket_size=200000000 overlap_comm=True load_from_fp32_weights=True elastic_checkpoint=False offload_param=None offload_optimizer=DeepSpeedZeroOffloadOptimizerConfig(device='cpu', nvme_path=None, buffer_count=4, pin_memory=False, pipeline=False, pipeline_read=False, pipeline_write=False, fast_init=False) sub_group_size=1,000,000,000 cpu_offload_param=None cpu_offload_use_pin_memory=None prefetch_bucket_size=50,000,000 param_persistence_threshold=100,000 model_persistence_threshold=sys.maxsize max_live_parameters=1,000,000,000 max_reuse_distance=1,000,000,000 gather_16bit_weights_on_model_save=False stage3_gather_fp16_weights_on_model_save=False ignore_unused_parameters=True legacy_stage1=False round_robin_gradients=False memory_efficient_linear=True
+[2023-05-09 23:04:10,874] [INFO] [config.py:957:print]   zero_enabled ................. True
+[2023-05-09 23:04:10,874] [INFO] [config.py:957:print]   zero_force_ds_cpu_optimizer .. True
+[2023-05-09 23:04:10,874] [INFO] [config.py:957:print]   zero_optimization_stage ...... 2
+[2023-05-09 23:04:10,874] [INFO] [config.py:943:print_user_config]   json = {
+    "fp16": {
+        "enabled": true, 
+        "loss_scale": 0, 
+        "loss_scale_window": 1000, 
+        "initial_scale_power": 16, 
+        "hysteresis": 2, 
+        "min_loss_scale": 1
+    }, 
+    "optimizer": {
+        "type": "AdamW", 
+        "params": {
+            "lr": 5e-05, 
+            "betas": [0.9, 0.999], 
+            "eps": 1e-08, 
+            "weight_decay": 0.0
+        }
+    }, 
+    "scheduler": {
+        "type": "WarmupLR", 
+        "params": {
+            "warmup_min_lr": 0, 
+            "warmup_max_lr": 5e-05, 
+            "warmup_num_steps": 0
+        }
+    }, 
+    "zero_optimization": {
+        "stage": 2, 
+        "allgather_partitions": true, 
+        "allgather_bucket_size": 2.000000e+08, 
+        "overlap_comm": true, 
+        "reduce_scatter": true, 
+        "reduce_bucket_size": 2.000000e+08, 
+        "contiguous_gradients": true, 
+        "cpu_offload": true
+    }, 
+    "gradient_accumulation_steps": 2, 
+    "gradient_clipping": 1.0, 
+    "steps_per_print": 2.000000e+03, 
+    "train_batch_size": 24, 
+    "train_micro_batch_size_per_gpu": 12, 
+    "wall_clock_breakdown": false
+}
+Using /home/stefanola/.cache/torch_extensions/py38_cu117 as PyTorch extensions root...
+No modifications detected for re-loaded extension module utils, skipping build step...
+Loading extension module utils...
+Time to load utils op: 0.0009334087371826172 seconds
+[INFO|trainer.py:1771] 2023-05-09 23:04:10,876 >> ***** Running training *****
+[INFO|trainer.py:1772] 2023-05-09 23:04:10,876 >>   Num examples = 12,000
+[INFO|trainer.py:1773] 2023-05-09 23:04:10,876 >>   Num Epochs = 1
+[INFO|trainer.py:1774] 2023-05-09 23:04:10,876 >>   Instantaneous batch size per device = 12
+[INFO|trainer.py:1775] 2023-05-09 23:04:10,876 >>   Total train batch size (w. parallel, distributed & accumulation) = 24
+[INFO|trainer.py:1776] 2023-05-09 23:04:10,876 >>   Gradient Accumulation steps = 2
+[INFO|trainer.py:1777] 2023-05-09 23:04:10,876 >>   Total optimization steps = 500
+[INFO|trainer.py:1778] 2023-05-09 23:04:10,876 >>   Number of trainable parameters = 559,009,792
+
+  0%|          | 0/500 [00:00<?, ?it/s][2023-05-09 23:04:13,936] [INFO] [loss_scaler.py:188:update_scale] [deepspeed] OVERFLOW! Rank 0 Skipping step. Attempted loss scale: 65536, but hysteresis is 2. Reducing hysteresis to 1
+
+  0%|          | 1/500 [00:03<25:26,  3.06s/it][2023-05-09 23:04:16,108] [INFO] [loss_scaler.py:181:update_scale] [deepspeed] OVERFLOW! Rank 0 Skipping step. Attempted loss scale: 65536, reducing to 32768
+
+  0%|          | 2/500 [00:05<21:03,  2.54s/it][2023-05-09 23:04:18,284] [INFO] [loss_scaler.py:181:update_scale] [deepspeed] OVERFLOW! Rank 0 Skipping step. Attempted loss scale: 32768, reducing to 16384
+
+  1%|          | 3/500 [00:07<19:38,  2.37s/it][2023-05-09 23:04:20,453] [INFO] [loss_scaler.py:181:update_scale] [deepspeed] OVERFLOW! Rank 0 Skipping step. Attempted loss scale: 16384, reducing to 8192
+
+  1%|          | 4/500 [00:09<18:56,  2.29s/it][2023-05-09 23:04:22,623] [INFO] [loss_scaler.py:181:update_scale] [deepspeed] OVERFLOW! Rank 0 Skipping step. Attempted loss scale: 8192, reducing to 4096
+
+  1%|          | 5/500 [00:11<18:32,  2.25s/it][2023-05-09 23:04:24,796] [INFO] [loss_scaler.py:181:update_scale] [deepspeed] OVERFLOW! Rank 0 Skipping step. Attempted loss scale: 4096, reducing to 2048
+
+  1%|          | 6/500 [00:13<18:17,  2.22s/it]
+  1%|▏         | 7/500 [00:18<23:43,  2.89s/it][2023-05-09 23:04:31,228] [INFO] [loss_scaler.py:181:update_scale] [deepspeed] OVERFLOW! Rank 0 Skipping step. Attempted loss scale: 2048, reducing to 1024
+
+  2%|▏         | 8/500 [00:20<21:48,  2.66s/it][2023-05-09 23:04:33,400] [INFO] [loss_scaler.py:181:update_scale] [deepspeed] OVERFLOW! Rank 0 Skipping step. Attempted loss scale: 1024, reducing to 512
+
+  2%|▏         | 9/500 [00:22<20:31,  2.51s/it][2023-05-09 23:04:35,573] [INFO] [loss_scaler.py:181:update_scale] [deepspeed] OVERFLOW! Rank 0 Skipping step. Attempted loss scale: 512, reducing to 256
+
+  2%|▏         | 10/500 [00:24<19:38,  2.40s/it]
+**********
+Sample 1 at step 10:
+/home/stefanola/anaconda3/envs/huggingface/lib/python3.8/site-packages/torch/utils/checkpoint.py:31: UserWarning: None of the inputs have requires_grad=True. Gradients will be None
+  warnings.warn("None of the inputs have requires_grad=True. Gradients will be None")
+'Á hvaða ári var Ísland stofnað sem lýðveldi? á í í í í í í í í í í í í í í í í í í í í í í í í í í í í í í í í í í í í í í í í í í í í í í í í í'
+
+**********
+Sample 2 at step 10:
+'Hver eru helstu einkenni norðurljósa?", "Eru á á á á á á á á á á á á á á á á á á á á á á á á á á á á á á á á á á á á á á á á á á á á á'
+
+**********
+Cloze test 1:
+Prompt text: 'Ísland er fallegasta land í heimi, því það er fullt af <mask>'
+Predicted output -> 'Í
+ *
+ *
+'
+
+**********
+Cloze test 2:
+Prompt text: 'Maturinn var svo góður, en ég gat ekki borðað meira vegna <mask>'
+Predicted output -> 'M'
+
+**********
+Cloze test 3:
+Prompt text: 'Ísland varð lýðveldi árið <mask>'
+Predicted output -> 'Í
+ *
+ *
+'
+
+  2%|▏         | 11/500 [00:32<34:04,  4.18s/it]
+  2%|▏         | 12/500 [00:37<34:18,  4.22s/it]
+  3%|▎         | 13/500 [00:41<34:14,  4.22s/it]
+  3%|▎         | 14/500 [00:45<34:20,  4.24s/it]
+  3%|▎         | 15/500 [00:49<34:17,  4.24s/it]
+  3%|▎         | 16/500 [00:54<34:15,  4.25s/it]
+  3%|▎         | 17/500 [00:58<34:42,  4.31s/it]
+  4%|▎         | 18/500 [01:02<34:27,  4.29s/it]
+  4%|▍         | 19/500 [01:07<34:15,  4.27s/it]
+  4%|▍         | 20/500 [01:11<34:14,  4.28s/it]
+**********
+Sample 1 at step 20:
+'Á hvaða ári var Ísland stofnað sem lýðveldi? Það er að því að því að því að því að því að því að því að því að því að því að því að'
+
+**********
+Sample 2 at step 20:
+'Hver eru helstu einkenni norðurljósa? Það eru hver að eru hver að eru hver að eru hver að eru hver að eru hver að eru hver að eru hver a'
+
+**********
+Cloze test 1:
+Prompt text: 'Ísland er fallegasta land í heimi, því það er fullt af <mask>'
+Predicted output -> 'Í. ". ".'
+
+**********
+Cloze test 2:
+Prompt text: 'Maturinn var svo góður, en ég gat ekki borðað meira vegna <mask>'
+Predicted output -> 'M ... Það þ'
+
+**********
+Cloze test 3:
+Prompt text: 'Ísland varð lýðveldi árið <mask>'
+Predicted output -> 'Í, " ". þ'
+
+  4%|▍         | 21/500 [01:18<40:24,  5.06s/it]
+  4%|▍         | 22/500 [01:22<38:24,  4.82s/it]
+  5%|▍         | 23/500 [01:26<36:58,  4.65s/it]
+  5%|▍         | 24/500 [01:31<36:30,  4.60s/it]
+  5%|▌         | 25/500 [01:35<35:34,  4.49s/it]
+  5%|▌         | 26/500 [01:39<35:02,  4.44s/it]
+  5%|▌         | 27/500 [01:44<34:28,  4.37s/it]
+  6%|▌         | 28/500 [01:48<34:10,  4.35s/it]
+  6%|▌         | 29/500 [01:52<33:54,  4.32s/it]
+  6%|▌         | 30/500 [01:56<33:40,  4.30s/it]
+**********
+Sample 1 at step 30:
+'Á hvaða ári var Ísland stofnað sem lýðveldi? Ég eru að það að það að að að að að að að að að að að að að að að að að að'
+
+**********
+Sample 2 at step 30:
+'Hver eru helstu einkenni norðurljósa? Ég eru að því að því að því að því að því að því að því að því að því að því að því að'
+
+**********
+Cloze test 1:
+Prompt text: 'Ísland er fallegasta land í heimi, því það er fullt af <mask>'
+Predicted output -> 'Í. En það'
+
+**********
+Cloze test 2:
+Prompt text: 'Maturinn var svo góður, en ég gat ekki borðað meira vegna <mask>'
+Predicted output -> 'M ... Það er'
+
+**********
+Cloze test 3:
+Prompt text: 'Ísland varð lýðveldi árið <mask>'
+Predicted output -> 'Í. Ég eru'
+
+  6%|▌         | 31/500 [02:03<39:43,  5.08s/it]
+  6%|▋         | 32/500 [02:08<37:39,  4.83s/it]
+  7%|▋         | 33/500 [02:12<36:11,  4.65s/it]
+  7%|▋         | 34/500 [02:16<35:08,  4.53s/it]
+  7%|▋         | 35/500 [02:20<34:32,  4.46s/it]
+  7%|▋         | 36/500 [02:25<34:00,  4.40s/it]
+  7%|▋         | 37/500 [02:29<33:55,  4.40s/it]
+  8%|▊         | 38/500 [02:33<33:36,  4.36s/it]
+  8%|▊         | 39/500 [02:37<33:13,  4.33s/it]
+  8%|▊         | 40/500 [02:42<33:10,  4.33s/it]
+**********
+Sample 1 at step 40:
+'Á hvaða ári var Ísland stofnað sem lýðveldi? Það eru það að það eru það að það eru það að það eru það að það eru það að'
+
+**********
+Sample 2 at step 40:
+'Hver eru helstu einkenni norðurljósa? Það eru það eru það eru það eru það eru það eru það eru það eru það eru það eru'
+
+**********
+Cloze test 1:
+Prompt text: 'Ísland er fallegasta land í heimi, því það er fullt af <mask>'
+Predicted output -> 'Í. Það er'
+
+**********
+Cloze test 2:
+Prompt text: 'Maturinn var svo góður, en ég gat ekki borðað meira vegna <mask>'
+Predicted output -> 'M ... Það er'
+
+**********
+Cloze test 3:
+Prompt text: 'Ísland varð lýðveldi árið <mask>'
+Predicted output -> 'Í. Það er'
+
+  8%|▊         | 41/500 [02:49<39:01,  5.10s/it]
+  8%|▊         | 42/500 [02:53<37:05,  4.86s/it]
+  9%|▊         | 43/500 [02:57<35:38,  4.68s/it]
+  9%|▉         | 44/500 [03:02<35:00,  4.61s/it]
+  9%|▉         | 45/500 [03:06<34:11,  4.51s/it]
+  9%|▉         | 46/500 [03:10<33:28,  4.42s/it]
+  9%|▉         | 47/500 [03:15<33:13,  4.40s/it]
+ 10%|▉         | 48/500 [03:19<32:46,  4.35s/it]
+ 10%|▉         | 49/500 [03:23<32:34,  4.33s/it]
+ 10%|█         | 50/500 [03:27<32:18,  4.31s/it]
+**********
+Sample 1 at step 50:
+'Á hvaða ári var Ísland stofnað sem lýðveldi? Það er það að það eru það að það eru það að það eru það að það eru það að þ'
+
+**********
+Sample 2 at step 50:
+'Hver eru helstu einkenni norðurljósa? Það er það að það eru ákvæðun á þeim. Það er það að það eru ákvæðun á þeim. Þa'
+
+**********
+Cloze test 1:
+Prompt text: 'Ísland er fallegasta land í heimi, því það er fullt af <mask>'
+Predicted output -> 'Í eiginlegt'
+
+**********
+Cloze test 2:
+Prompt text: 'Maturinn var svo góður, en ég gat ekki borðað meira vegna <mask>'
+Predicted output -> 'M ... Það er'
+
+**********
+Cloze test 3:
+Prompt text: 'Ísland varð lýðveldi árið <mask>'
+Predicted output -> 'Í eiginlegt'
+
+ 10%|█         | 51/500 [03:34<38:20,  5.12s/it]
+ 10%|█         | 52/500 [03:39<36:17,  4.86s/it]
+ 11%|█         | 53/500 [03:43<34:45,  4.66s/it]
+ 11%|█         | 54/500 [03:47<33:41,  4.53s/it]
+ 11%|█         | 55/500 [03:51<32:55,  4.44s/it]
+ 11%|█         | 56/500 [03:55<32:20,  4.37s/it]
+ 11%|█▏        | 57/500 [04:00<32:05,  4.35s/it]
+ 12%|█▏        | 58/500 [04:04<31:46,  4.31s/it]
+ 12%|█▏        | 59/500 [04:08<31:36,  4.30s/it]
+ 12%|█▏        | 60/500 [04:13<31:27,  4.29s/it]
+**********
+Sample 1 at step 60:
+'Á hvaða ári var Ísland stofnað sem lýðveldi? Það eru það að það eru að það eru að það eru að það eru að það eru að það eru'
+
+**********
+Sample 2 at step 60:
+'Hver eru helstu einkenni norðurljósa? Það eru ekki að það eru að það eru að það eru að það eru að það eru að það eru a'
+
+**********
+Cloze test 1:
+Prompt text: 'Ísland er fallegasta land í heimi, því það er fullt af <mask>'
+Predicted output -> 'Í. Það er'
+
+**********
+Cloze test 2:
+Prompt text: 'Maturinn var svo góður, en ég gat ekki borðað meira vegna <mask>'
+Predicted output -> 'M ... Það er'
+
+**********
+Cloze test 3:
+Prompt text: 'Ísland varð lýðveldi árið <mask>'
+Predicted output -> 'Í. Það er'
+
+ 12%|█▏        | 61/500 [04:19<37:01,  5.06s/it]
+ 12%|█▏        | 62/500 [04:24<35:05,  4.81s/it]
+ 13%|█▎        | 63/500 [04:28<33:48,  4.64s/it]
+ 13%|█▎        | 64/500 [04:32<32:50,  4.52s/it]
+ 13%|█▎        | 65/500 [04:36<32:09,  4.44s/it]
+ 13%|█▎        | 66/500 [04:41<32:10,  4.45s/it]
+ 13%|█▎        | 67/500 [04:45<31:40,  4.39s/it]
+ 14%|█▎        | 68/500 [04:49<31:27,  4.37s/it]
+ 14%|█▍        | 69/500 [04:54<31:08,  4.33s/it]
+ 14%|█▍        | 70/500 [04:58<31:06,  4.34s/it]
+**********
+Sample 1 at step 70:
+'Á hvaða ári var Ísland stofnað sem lýðveldi? Það er ekki að vera að vera. Það er ekki að vera að vera. Það er ekki að vera að vera. Það er ekki að vera að'
+
+**********
+Sample 2 at step 70:
+'Hver eru helstu einkenni norðurljósa? Það er ekki að vera. Það er ekki að vera. Það er ekki að vera. Það er ekki að vera. Það er ekki að vera.'
+
+**********
+Cloze test 1:
+Prompt text: 'Ísland er fallegasta land í heimi, því það er fullt af <mask>'
+Predicted output -> 'Í. Það er'
+
+**********
+Cloze test 2:
+Prompt text: 'Maturinn var svo góður, en ég gat ekki borðað meira vegna <mask>'
+Predicted output -> 'M ...'
+
+**********
+Cloze test 3:
+Prompt text: 'Ísland varð lýðveldi árið <mask>'
+Predicted output -> 'Í. Það er'
+
+ 14%|█▍        | 71/500 [05:05<36:35,  5.12s/it]
+ 14%|█▍        | 72/500 [05:09<35:13,  4.94s/it]
+ 15%|█▍        | 73/500 [05:14<33:42,  4.74s/it]
+ 15%|█▍        | 74/500 [05:18<32:36,  4.59s/it]
+ 15%|█▌        | 75/500 [05:22<31:49,  4.49s/it]
+ 15%|█▌        | 76/500 [05:27<31:16,  4.43s/it]
+ 15%|█▌        | 77/500 [05:31<30:54,  4.39s/it]
+ 16%|█▌        | 78/500 [05:35<30:36,  4.35s/it]
+ 16%|█▌        | 79/500 [05:40<30:45,  4.38s/it]
+ 16%|█▌        | 80/500 [05:44<30:27,  4.35s/it]
+**********
+Sample 1 at step 80:
+'Á hvaða ári var Ísland stofnað sem lýðveldi? Það eru það að gera það að það séu að gera það að það séu að gera það að það séu að gera'
+
+**********
+Sample 2 at step 80:
+'Hver eru helstu einkenni norðurljósa? Það eru það að gera það að það séu að gera það að það séu að gera það að það séu að gera'
+
+**********
+Cloze test 1:
+Prompt text: 'Ísland er fallegasta land í heimi, því það er fullt af <mask>'
+Predicted output -> 'Í. Það er'
+
+**********
+Cloze test 2:
+Prompt text: 'Maturinn var svo góður, en ég gat ekki borðað meira vegna <mask>'
+Predicted output -> 'M ... Það er'
+
+**********
+Cloze test 3:
+Prompt text: 'Ísland varð lýðveldi árið <mask>'
+Predicted output -> 'Í. Það er'
+
+ 16%|█▌        | 81/500 [05:51<35:53,  5.14s/it]
+ 16%|█▋        | 82/500 [05:55<33:54,  4.87s/it]
+ 17%|█▋        | 83/500 [05:59<32:41,  4.70s/it]
+ 17%|█▋        | 84/500 [06:04<31:41,  4.57s/it]
+ 17%|█▋        | 85/500 [06:08<32:02,  4.63s/it]
+ 17%|█▋        | 86/500 [06:13<31:50,  4.62s/it]
+ 17%|█▋        | 87/500 [06:17<31:16,  4.54s/it]
+ 18%|█▊        | 88/500 [06:22<30:55,  4.50s/it]
+ 18%|█▊        | 89/500 [06:26<30:32,  4.46s/it]
+ 18%|█▊        | 90/500 [06:31<30:40,  4.49s/it]
+**********
+Sample 1 at step 90:
+'Á hvaða ári var Ísland stofnað sem lýðveldi? Það eru það sem þau væri að taka áhugavert? Það eru það sem þau væri að taka áhugavert? Þa'
+
+**********
+Sample 2 at step 90:
+'Hver eru helstu einkenni norðurljósa? Það eru það sem þau eru það sem þau eru það sem þau eru það sem þau eru það sem þau eru það sem þ'
+
+**********
+Cloze test 1:
+Prompt text: 'Ísland er fallegasta land í heimi, því það er fullt af <mask>'
+Predicted output -> 'Í. Það er'
+
+**********
+Cloze test 2:
+Prompt text: 'Maturinn var svo góður, en ég gat ekki borðað meira vegna <mask>'
+Predicted output -> 'M'
+
+**********
+Cloze test 3:
+Prompt text: 'Ísland varð lýðveldi árið <mask>'
+Predicted output -> 'Í. Það er'
+
+ 18%|█▊        | 91/500 [06:38<36:08,  5.30s/it]
+ 18%|█▊        | 92/500 [06:42<34:34,  5.08s/it]
+ 19%|█▊        | 93/500 [06:47<33:02,  4.87s/it]
+ 19%|█▉        | 94/500 [06:51<32:22,  4.78s/it]
+ 19%|█▉        | 95/500 [06:56<31:27,  4.66s/it]
+ 19%|█▉        | 96/500 [07:00<31:13,  4.64s/it]
+ 19%|█▉        | 97/500 [07:05<30:44,  4.58s/it]
+ 20%|█▉        | 98/500 [07:09<30:19,  4.53s/it]
+ 20%|█▉        | 99/500 [07:14<30:20,  4.54s/it]
+ 20%|██        | 100/500 [07:18<29:54,  4.49s/it][INFO|trainer.py:3138] 2023-05-09 23:11:29,492 >> ***** Running Evaluation *****
+[INFO|trainer.py:3140] 2023-05-09 23:11:29,493 >>   Num examples = 500
+[INFO|trainer.py:3143] 2023-05-09 23:11:29,493 >>   Batch size = 8
+
+
+  0%|          | 0/63 [00:00<?, ?it/s][A
+
+  3%|▎         | 2/63 [00:00<00:05, 11.62it/s][A
+
+  6%|▋         | 4/63 [00:00<00:08,  7.32it/s][A
+
+  8%|▊         | 5/63 [00:00<00:08,  6.78it/s][A
+
+ 10%|▉         | 6/63 [00:00<00:08,  6.46it/s][A
+
+ 11%|█         | 7/63 [00:01<00:08,  6.26it/s][A
+
+ 13%|█▎        | 8/63 [00:01<00:08,  6.11it/s][A
+
+ 14%|█▍        | 9/63 [00:01<00:08,  6.02it/s][A
+
+ 16%|█▌        | 10/63 [00:01<00:08,  5.95it/s][A
+
+ 17%|█▋        | 11/63 [00:01<00:08,  5.88it/s][A
+
+ 19%|█▉        | 12/63 [00:01<00:08,  5.88it/s][A
+
+ 21%|██        | 13/63 [00:02<00:08,  5.85it/s][A
+
+ 22%|██▏       | 14/63 [00:02<00:08,  5.83it/s][A
+
+ 24%|██▍       | 15/63 [00:02<00:08,  5.84it/s][A
+
+ 25%|██▌       | 16/63 [00:02<00:08,  5.82it/s][A
+
+ 27%|██▋       | 17/63 [00:02<00:07,  5.82it/s][A
+
+ 29%|██▊       | 18/63 [00:02<00:07,  5.82it/s][A
+
+ 30%|███       | 19/63 [00:03<00:07,  5.81it/s][A
+
+ 32%|███▏      | 20/63 [00:03<00:07,  5.81it/s][A
+
+ 33%|███▎      | 21/63 [00:03<00:07,  5.80it/s][A
+
+ 35%|███▍      | 22/63 [00:03<00:07,  5.80it/s][A
+
+ 37%|███▋      | 23/63 [00:03<00:06,  5.80it/s][A
+
+ 38%|███▊      | 24/63 [00:03<00:06,  5.80it/s][A
+
+ 40%|███▉      | 25/63 [00:04<00:06,  5.81it/s][A
+
+ 41%|████▏     | 26/63 [00:04<00:06,  5.81it/s][A
+
+ 43%|████▎     | 27/63 [00:04<00:06,  5.82it/s][A
+
+ 44%|████▍     | 28/63 [00:04<00:06,  5.82it/s][A
+
+ 46%|████▌     | 29/63 [00:04<00:05,  5.82it/s][A
+
+ 48%|████▊     | 30/63 [00:04<00:05,  5.82it/s][A
+
+ 49%|████▉     | 31/63 [00:05<00:05,  5.82it/s][A
+
+ 51%|█████     | 32/63 [00:05<00:05,  5.82it/s][A
+
+ 52%|█████▏    | 33/63 [00:05<00:05,  5.82it/s][A
+
+ 54%|█████▍    | 34/63 [00:05<00:04,  5.82it/s][A
+
+ 56%|█████▌    | 35/63 [00:05<00:04,  5.82it/s][A
+
+ 57%|█████▋    | 36/63 [00:06<00:04,  5.80it/s][A
+
+ 59%|█████▊    | 37/63 [00:06<00:04,  5.82it/s][A
+
+ 60%|██████    | 38/63 [00:06<00:04,  5.82it/s][A
+
+ 62%|██████▏   | 39/63 [00:06<00:04,  5.82it/s][A
+
+ 63%|██████▎   | 40/63 [00:06<00:03,  5.82it/s][A
+
+ 65%|██████▌   | 41/63 [00:06<00:03,  5.82it/s][A
+
+ 67%|██████▋   | 42/63 [00:07<00:03,  5.82it/s][A
+
+ 68%|██████▊   | 43/63 [00:07<00:03,  5.83it/s][A
+
+ 70%|██████▉   | 44/63 [00:07<00:03,  5.83it/s][A
+
+ 71%|███████▏  | 45/63 [00:07<00:03,  5.82it/s][A
+
+ 73%|███████▎  | 46/63 [00:07<00:02,  5.82it/s][A
+
+ 75%|███████▍  | 47/63 [00:07<00:02,  5.82it/s][A
+
+ 76%|███████▌  | 48/63 [00:08<00:02,  5.82it/s][A
+
+ 78%|███████▊  | 49/63 [00:08<00:02,  5.82it/s][A
+
+ 79%|███████▉  | 50/63 [00:08<00:02,  5.82it/s][A
+
+ 81%|████████  | 51/63 [00:08<00:02,  5.82it/s][A
+
+ 83%|████████▎ | 52/63 [00:08<00:01,  5.82it/s][A
+
+ 84%|████████▍ | 53/63 [00:08<00:01,  5.82it/s][A
+
+ 86%|████████▌ | 54/63 [00:09<00:01,  5.82it/s][A
+
+ 87%|████████▋ | 55/63 [00:09<00:01,  5.83it/s][A
+
+ 89%|████████▉ | 56/63 [00:09<00:01,  5.82it/s][A
+
+ 90%|█████████ | 57/63 [00:09<00:01,  5.82it/s][A
+
+ 92%|█████████▏| 58/63 [00:09<00:00,  5.82it/s][A
+
+ 94%|█████████▎| 59/63 [00:09<00:00,  5.82it/s][A
+
+ 95%|█████████▌| 60/63 [00:10<00:00,  5.82it/s][A
+
+ 97%|█████████▋| 61/63 [00:10<00:00,  5.82it/s][A
+
+ 98%|█████████▊| 62/63 [00:10<00:00,  5.82it/s][A
+
+100%|██████████| 63/63 [00:10<00:00,  5.83it/s][A
+                                                 
+
+                                               
+[A{'eval_loss': 3.572265625, 'eval_runtime': 10.76, 'eval_samples_per_second': 46.469, 'eval_steps_per_second': 5.855, 'epoch': 0.2}
+
+ 20%|██        | 100/500 [07:29<29:54,  4.49s/it]
+
+100%|██████████| 63/63 [00:10<00:00,  5.83it/s][A
+
+                                               [A
+**********
+Sample 1 at step 100:
+'Á hvaða ári var Ísland stofnað sem lýðveldi? Það er ekki að gera það að það er að gera það að það er að gera það að það er að gera það að'
+
+**********
+Sample 2 at step 100:
+'Hver eru helstu einkenni norðurljósa? Það er ekki að gera það að það eru það að gera það að það eru það að gera það að það er'
+
+**********
+Cloze test 1:
+Prompt text: 'Ísland er fallegasta land í heimi, því það er fullt af <mask>'
+Predicted output -> 'Í þegar þegar þ'
+
+**********
+Cloze test 2:
+Prompt text: 'Maturinn var svo góður, en ég gat ekki borðað meira vegna <mask>'
+Predicted output -> 'M'
+
+**********
+Cloze test 3:
+Prompt text: 'Ísland varð lýðveldi árið <mask>'
+Predicted output -> 'Í þegar þegar þ'
+
+ 20%|██        | 101/500 [07:36<55:57,  8.41s/it]
+ 20%|██        | 102/500 [07:40<47:54,  7.22s/it]
+ 21%|██        | 103/500 [07:45<42:35,  6.44s/it]
+ 21%|██        | 104/500 [07:49<38:22,  5.82s/it]
+ 21%|██        | 105/500 [07:54<35:42,  5.42s/it]
+ 21%|██        | 106/500 [07:58<33:33,  5.11s/it]
+ 21%|██▏       | 107/500 [08:03<32:26,  4.95s/it]
+ 22%|██▏       | 108/500 [08:07<31:22,  4.80s/it]
+ 22%|██▏       | 109/500 [08:12<30:39,  4.71s/it]
+ 22%|██▏       | 110/500 [08:16<30:09,  4.64s/it]
+**********
+Sample 1 at step 110:
+'Á hvaða ári var Ísland stofnað sem lýðveldi? Það er ekki að skoða það sem það er að skoða. Það er að skoða það sem það er að skoða. Þa'
+
+**********
+Sample 2 at step 110:
+'Hver eru helstu einkenni norðurljósa? Það er ekki að skoða það sem það er að skoða. Það er ekki að skoða það sem það er að skoða.'
+
+**********
+Cloze test 1:
+Prompt text: 'Ísland er fallegasta land í heimi, því það er fullt af <mask>'
+Predicted output -> 'Í. Þetta er a'
+
+**********
+Cloze test 2:
+Prompt text: 'Maturinn var svo góður, en ég gat ekki borðað meira vegna <mask>'
+Predicted output -> 'M'
+
+**********
+Cloze test 3:
+Prompt text: 'Ísland varð lýðveldi árið <mask>'
+Predicted output -> 'Í. Þetta er a'
+
+ 22%|██▏       | 111/500 [08:23<34:57,  5.39s/it]
+ 22%|██▏       | 112/500 [08:28<32:54,  5.09s/it]
+ 23%|██▎       | 113/500 [08:32<31:39,  4.91s/it]
+ 23%|██▎       | 114/500 [08:36<30:41,  4.77s/it]
+ 23%|██▎       | 115/500 [08:41<30:00,  4.68s/it]
+ 23%|██▎       | 116/500 [08:46<29:59,  4.69s/it]
+ 23%|██▎       | 117/500 [08:50<29:24,  4.61s/it]
+ 24%|██▎       | 118/500 [08:54<28:54,  4.54s/it]
+ 24%|██▍       | 119/500 [08:59<28:29,  4.49s/it]
+ 24%|██▍       | 120/500 [09:03<28:33,  4.51s/it]
+**********
+Sample 1 at step 120:
+'Á hvaða ári var Ísland stofnað sem lýðveldi? Það er ekki að það er náttúrlega að gera það. Það er ekki að það er náttúrlega að gera það. Það er'
+
+**********
+Sample 2 at step 120:
+'Hver eru helstu einkenni norðurljósa? Það er ekki að gera það. Það er ekki að gera það. Það er ekki að gera það. Það er ekki að gera þa'
+
+**********
+Cloze test 1:
+Prompt text: 'Ísland er fallegasta land í heimi, því það er fullt af <mask>'
+Predicted output -> 'Í. Það er'
+
+**********
+Cloze test 2:
+Prompt text: 'Maturinn var svo góður, en ég gat ekki borðað meira vegna <mask>'
+Predicted output -> 'M'
+
+**********
+Cloze test 3:
+Prompt text: 'Ísland varð lýðveldi árið <mask>'
+Predicted output -> 'Í. Það er'
+
+ 24%|██▍       | 121/500 [09:10<33:15,  5.27s/it]
+ 24%|██▍       | 122/500 [09:15<31:57,  5.07s/it]
+ 25%|██▍       | 123/500 [09:19<30:32,  4.86s/it]
+ 25%|██▍       | 124/500 [09:24<29:55,  4.78s/it]
+ 25%|██▌       | 125/500 [09:28<29:07,  4.66s/it]
+ 25%|██▌       | 126/500 [09:33<28:56,  4.64s/it]
+ 25%|██▌       | 127/500 [09:37<28:30,  4.59s/it]
+ 26%|██▌       | 128/500 [09:42<28:12,  4.55s/it]
+ 26%|██▌       | 129/500 [09:46<28:03,  4.54s/it]
+ 26%|██▌       | 130/500 [09:51<27:37,  4.48s/it]
+**********
+Sample 1 at step 130:
+'Á hvaða ári var Ísland stofnað sem lýðveldi? Það er ekki að segja. Ég hef ekki verið að segja það. Ég hef ekki verið að segja það. Ég hef ek'
+
+**********
+Sample 2 at step 130:
+'Hver eru helstu einkenni norðurljósa? Það eru það sem ég hefði ekki verið að vera að vera að vera að vera að vera að vera að vera að vera að vera að vera að'
+
+**********
+Cloze test 1:
+Prompt text: 'Ísland er fallegasta land í heimi, því það er fullt af <mask>'
+Predicted output -> 'Í. Það er'
+
+**********
+Cloze test 2:
+Prompt text: 'Maturinn var svo góður, en ég gat ekki borðað meira vegna <mask>'
+Predicted output -> 'M'
+
+**********
+Cloze test 3:
+Prompt text: 'Ísland varð lýðveldi árið <mask>'
+Predicted output -> 'Í. Það er'
+
+ 26%|██▌       | 131/500 [09:58<32:10,  5.23s/it]
+ 26%|██▋       | 132/500 [10:02<30:31,  4.98s/it]
+ 27%|██▋       | 133/500 [10:07<29:26,  4.81s/it]
+ 27%|██▋       | 134/500 [10:11<28:40,  4.70s/it]
+ 27%|██▋       | 135/500 [10:16<29:05,  4.78s/it]
+ 27%|██▋       | 136/500 [10:20<28:19,  4.67s/it]
+ 27%|██▋       | 137/500 [10:25<27:58,  4.63s/it]
+ 28%|██▊       | 138/500 [10:29<27:28,  4.55s/it]
+ 28%|██▊       | 139/500 [10:34<27:23,  4.55s/it]
+ 28%|██▊       | 140/500 [10:38<27:03,  4.51s/it]
+**********
+Sample 1 at step 140:
+'Á hvaða ári var Ísland stofnað sem lýðveldi? Það eru það sem eru að vera að vera að vera að vera að vera að vera að vera að vera að vera að vera að vera að vera að vera'
+
+**********
+Sample 2 at step 140:
+'Hver eru helstu einkenni norðurljósa? Það eru ekki að vera að vera að vera að vera að vera að vera að vera að vera að vera að vera að vera að vera að vera að vera a'
+
+**********
+Cloze test 1:
+Prompt text: 'Ísland er fallegasta land í heimi, því það er fullt af <mask>'
+Predicted output -> 'Í. Þetta eru'
+
+**********
+Cloze test 2:
+Prompt text: 'Maturinn var svo góður, en ég gat ekki borðað meira vegna <mask>'
+Predicted output -> 'M'
+
+**********
+Cloze test 3:
+Prompt text: 'Ísland varð lýðveldi árið <mask>'
+Predicted output -> 'Í. Það er'
+
+ 28%|██▊       | 141/500 [10:46<32:26,  5.42s/it]
+ 28%|██▊       | 142/500 [10:50<30:33,  5.12s/it]
+ 29%|██▊       | 143/500 [10:55<29:32,  4.97s/it]
+ 29%|██▉       | 144/500 [10:59<28:27,  4.80s/it]
+ 29%|██▉       | 145/500 [11:04<27:58,  4.73s/it]
+ 29%|██▉       | 146/500 [11:08<27:21,  4.64s/it]
+ 29%|██▉       | 147/500 [11:13<26:54,  4.57s/it]
+ 30%|██▉       | 148/500 [11:17<26:48,  4.57s/it]
+ 30%|██▉       | 149/500 [11:22<26:22,  4.51s/it]
+ 30%|███       | 150/500 [11:26<26:03,  4.47s/it]
+**********
+Sample 1 at step 150:
+'Á hvaða ári var Ísland stofnað sem lýðveldi? Það eru það sem eru það sem eru það sem eru það sem eru það sem eru það sem eru það sem eru það'
+
+**********
+Sample 2 at step 150:
+'Hver eru helstu einkenni norðurljósa? Það eru það sem ég er ekki að segja að það séu ekki að vera að skrifa það sem ég er að segja. Það eru'
+
+**********
+Cloze test 1:
+Prompt text: 'Ísland er fallegasta land í heimi, því það er fullt af <mask>'
+Predicted output -> 'Í. Það er'
+
+**********
+Cloze test 2:
+Prompt text: 'Maturinn var svo góður, en ég gat ekki borðað meira vegna <mask>'
+Predicted output -> 'M'
+
+**********
+Cloze test 3:
+Prompt text: 'Ísland varð lýðveldi árið <mask>'
+Predicted output -> 'Í. Það er'
+
+ 30%|███       | 151/500 [11:33<30:16,  5.20s/it]
+ 30%|███       | 152/500 [11:37<28:45,  4.96s/it]
+ 31%|███       | 153/500 [11:42<27:40,  4.79s/it]
+ 31%|███       | 154/500 [11:46<26:52,  4.66s/it]
+ 31%|███       | 155/500 [11:50<26:24,  4.59s/it]
+ 31%|███       | 156/500 [11:55<25:58,  4.53s/it]
+ 31%|███▏      | 157/500 [11:59<25:47,  4.51s/it]
+ 32%|███▏      | 158/500 [12:04<25:18,  4.44s/it]
+ 32%|███▏      | 159/500 [12:08<26:00,  4.58s/it]
+ 32%|███▏      | 160/500 [12:13<26:09,  4.62s/it]
+**********
+Sample 1 at step 160:
+'Á hvaða ári var Ísland stofnað sem lýðveldi? Það er ekki hægt að vera í þessum málum, því að það er ekki hægt að vera í þessum málum, því að það er'
+
+**********
+Sample 2 at step 160:
+'Hver eru helstu einkenni norðurljósa? Það er ekki hægt að vera í þessum hætti. Það er ekki hægt að vera í þessum hætti. Það er ekki hæ'
+
+**********
+Cloze test 1:
+Prompt text: 'Ísland er fallegasta land í heimi, því það er fullt af <mask>'
+Predicted output -> 'Í, sem eru þ'
+
+**********
+Cloze test 2:
+Prompt text: 'Maturinn var svo góður, en ég gat ekki borðað meira vegna <mask>'
+Predicted output -> 'M'
+
+**********
+Cloze test 3:
+Prompt text: 'Ísland varð lýðveldi árið <mask>'
+Predicted output -> 'Í, þar sem þ'
+
+ 32%|███▏      | 161/500 [12:20<30:10,  5.34s/it]
+ 32%|███▏      | 162/500 [12:25<28:41,  5.09s/it]
+ 33%|███▎      | 163/500 [12:29<27:22,  4.87s/it]
+ 33%|███▎      | 164/500 [12:34<26:45,  4.78s/it]
+ 33%|███▎      | 165/500 [12:38<26:05,  4.67s/it]
+ 33%|███▎      | 166/500 [12:42<25:36,  4.60s/it]
+ 33%|███▎      | 167/500 [12:47<25:21,  4.57s/it]
+ 34%|███▎      | 168/500 [12:51<25:00,  4.52s/it]
+ 34%|███▍      | 169/500 [12:56<24:41,  4.47s/it]
+ 34%|███▍      | 170/500 [13:00<24:25,  4.44s/it]
+**********
+Sample 1 at step 170:
+'Á hvaða ári var Ísland stofnað sem lýðveldi? Það eru það sem þú ert að vera að vera að vera að vera að vera að vera að vera að vera að vera að vera að vera að vera að'
+
+**********
+Sample 2 at step 170:
+'Hver eru helstu einkenni norðurljósa? Það er ekki aðeins aðeins aðeins aðeins aðeins aðeins aðeins aðeins aðeins aðeins aðeins'
+
+**********
+Cloze test 1:
+Prompt text: 'Ísland er fallegasta land í heimi, því það er fullt af <mask>'
+Predicted output -> 'Í, þó að'
+
+**********
+Cloze test 2:
+Prompt text: 'Maturinn var svo góður, en ég gat ekki borðað meira vegna <mask>'
+Predicted output -> 'M'
+
+**********
+Cloze test 3:
+Prompt text: 'Ísland varð lýðveldi árið <mask>'
+Predicted output -> 'Í. Það er'
+
+ 34%|███▍      | 171/500 [13:07<28:50,  5.26s/it]
+ 34%|███▍      | 172/500 [13:12<27:22,  5.01s/it]
+ 35%|███▍      | 173/500 [13:16<26:30,  4.86s/it]
+ 35%|███▍      | 174/500 [13:21<25:38,  4.72s/it]
+ 35%|███▌      | 175/500 [13:25<25:08,  4.64s/it]
+ 35%|███▌      | 176/500 [13:29<24:35,  4.55s/it]
+ 35%|███▌      | 177/500 [13:34<24:21,  4.52s/it]
+ 36%|███▌      | 178/500 [13:38<24:06,  4.49s/it]
+ 36%|███▌      | 179/500 [13:43<23:53,  4.47s/it]
+ 36%|███▌      | 180/500 [13:47<24:22,  4.57s/it]
+**********
+Sample 1 at step 180:
+'Á hvaða ári var Ísland stofnað sem lýðveldi? Það eru það sem það er að það er að það er að það er að það er að það er að það er a'
+
+**********
+Sample 2 at step 180:
+'Hver eru helstu einkenni norðurljósa? Það eru allir sem eru í þessum eiginlegu eða eiginlegu eða eiginlegu eða eiginlegu eða eiginlegu eða e'
+
+**********
+Cloze test 1:
+Prompt text: 'Ísland er fallegasta land í heimi, því það er fullt af <mask>'
+Predicted output -> 'Í, sem eru þ'
+
+**********
+Cloze test 2:
+Prompt text: 'Maturinn var svo góður, en ég gat ekki borðað meira vegna <mask>'
+Predicted output -> 'M'
+
+**********
+Cloze test 3:
+Prompt text: 'Ísland varð lýðveldi árið <mask>'
+Predicted output -> 'Í, sem eru þ'
+
+ 36%|███▌      | 181/500 [13:55<28:13,  5.31s/it]
+ 36%|███▋      | 182/500 [13:59<26:37,  5.02s/it]
+ 37%|███▋      | 183/500 [14:03<25:31,  4.83s/it]
+ 37%|███▋      | 184/500 [14:08<24:47,  4.71s/it]
+ 37%|███▋      | 185/500 [14:12<24:15,  4.62s/it]
+ 37%|███▋      | 186/500 [14:17<24:41,  4.72s/it]
+ 37%|███▋      | 187/500 [14:21<24:07,  4.62s/it]
+ 38%|███▊      | 188/500 [14:26<23:50,  4.58s/it]
+ 38%|███▊      | 189/500 [14:30<23:24,  4.52s/it]
+ 38%|███▊      | 190/500 [14:35<23:16,  4.50s/it]
+**********
+Sample 1 at step 190:
+'Á hvaða ári var Ísland stofnað sem lýðveldi? Það er ekki hægt að vera að vera að vera að vera að vera að vera að vera að vera að vera að vera að vera að vera að vera að'
+
+**********
+Sample 2 at step 190:
+'Hver eru helstu einkenni norðurljósa? Það er ekki aðeins að það séu ekki aðeins að það séu ekki aðeins að það séu ekki aðeins a'
+
+**********
+Cloze test 1:
+Prompt text: 'Ísland er fallegasta land í heimi, því það er fullt af <mask>'
+Predicted output -> 'Í, þar sem þ'
+
+**********
+Cloze test 2:
+Prompt text: 'Maturinn var svo góður, en ég gat ekki borðað meira vegna <mask>'
+Predicted output -> 'M'
+
+**********
+Cloze test 3:
+Prompt text: 'Ísland varð lýðveldi árið <mask>'
+Predicted output -> 'Í, þar sem þ'
+
+ 38%|███▊      | 191/500 [14:42<27:09,  5.27s/it]
+ 38%|███▊      | 192/500 [14:47<26:19,  5.13s/it]
+ 39%|███▊      | 193/500 [14:51<25:11,  4.92s/it]
+ 39%|███▉      | 194/500 [14:55<24:18,  4.77s/it]
+ 39%|███▉      | 195/500 [15:00<23:36,  4.64s/it]
+ 39%|███▉      | 196/500 [15:04<23:06,  4.56s/it]
+ 39%|███▉      | 197/500 [15:09<22:57,  4.55s/it]
+ 40%|███▉      | 198/500 [15:13<22:42,  4.51s/it]
+ 40%|███▉      | 199/500 [15:18<22:54,  4.57s/it]
+ 40%|████      | 200/500 [15:22<22:37,  4.53s/it][INFO|trainer.py:3138] 2023-05-09 23:19:33,630 >> ***** Running Evaluation *****
+[INFO|trainer.py:3140] 2023-05-09 23:19:33,630 >>   Num examples = 500
+[INFO|trainer.py:3143] 2023-05-09 23:19:33,630 >>   Batch size = 8
+
+
+  0%|          | 0/63 [00:00<?, ?it/s][A
+
+  3%|▎         | 2/63 [00:00<00:05, 11.69it/s][A
+
+  6%|▋         | 4/63 [00:00<00:08,  7.34it/s][A
+
+  8%|▊         | 5/63 [00:00<00:08,  6.81it/s][A
+
+ 10%|▉         | 6/63 [00:00<00:08,  6.49it/s][A
+
+ 11%|█         | 7/63 [00:01<00:08,  6.27it/s][A
+
+ 13%|█▎        | 8/63 [00:01<00:08,  6.13it/s][A
+
+ 14%|█▍        | 9/63 [00:01<00:08,  6.03it/s][A
+
+ 16%|█▌        | 10/63 [00:01<00:08,  5.97it/s][A
+
+ 17%|█▋        | 11/63 [00:01<00:08,  5.92it/s][A
+
+ 19%|█▉        | 12/63 [00:01<00:08,  5.89it/s][A
+
+ 21%|██        | 13/63 [00:02<00:08,  5.87it/s][A
+
+ 22%|██▏       | 14/63 [00:02<00:08,  5.85it/s][A
+
+ 24%|██▍       | 15/63 [00:02<00:08,  5.84it/s][A
+
+ 25%|██▌       | 16/63 [00:02<00:08,  5.84it/s][A
+
+ 27%|██▋       | 17/63 [00:02<00:07,  5.83it/s][A
+
+ 29%|██▊       | 18/63 [00:02<00:07,  5.83it/s][A
+
+ 30%|███       | 19/63 [00:03<00:07,  5.82it/s][A
+
+ 32%|███▏      | 20/63 [00:03<00:07,  5.83it/s][A
+
+ 33%|███▎      | 21/63 [00:03<00:07,  5.83it/s][A
+
+ 35%|███▍      | 22/63 [00:03<00:07,  5.83it/s][A
+
+ 37%|███▋      | 23/63 [00:03<00:06,  5.82it/s][A
+
+ 38%|███▊      | 24/63 [00:03<00:06,  5.82it/s][A
+
+ 40%|███▉      | 25/63 [00:04<00:06,  5.82it/s][A
+
+ 41%|████▏     | 26/63 [00:04<00:06,  5.82it/s][A
+
+ 43%|████▎     | 27/63 [00:04<00:06,  5.82it/s][A
+
+ 44%|████▍     | 28/63 [00:04<00:06,  5.82it/s][A
+
+ 46%|████▌     | 29/63 [00:04<00:05,  5.80it/s][A
+
+ 48%|████▊     | 30/63 [00:04<00:05,  5.81it/s][A
+
+ 49%|████▉     | 31/63 [00:05<00:05,  5.81it/s][A
+
+ 51%|█████     | 32/63 [00:05<00:05,  5.81it/s][A
+
+ 52%|█████▏    | 33/63 [00:05<00:05,  5.81it/s][A
+
+ 54%|█████▍    | 34/63 [00:05<00:04,  5.81it/s][A
+
+ 56%|█████▌    | 35/63 [00:05<00:04,  5.81it/s][A
+
+ 57%|█████▋    | 36/63 [00:06<00:04,  5.81it/s][A
+
+ 59%|█████▊    | 37/63 [00:06<00:04,  5.81it/s][A
+
+ 60%|██████    | 38/63 [00:06<00:04,  5.81it/s][A
+
+ 62%|██████▏   | 39/63 [00:06<00:04,  5.81it/s][A
+
+ 63%|██████▎   | 40/63 [00:06<00:03,  5.80it/s][A
+
+ 65%|██████▌   | 41/63 [00:06<00:03,  5.80it/s][A
+
+ 67%|██████▋   | 42/63 [00:07<00:03,  5.80it/s][A
+
+ 68%|██████▊   | 43/63 [00:07<00:03,  5.80it/s][A
+
+ 70%|██████▉   | 44/63 [00:07<00:03,  5.80it/s][A
+
+ 71%|███████▏  | 45/63 [00:07<00:03,  5.80it/s][A
+
+ 73%|███████▎  | 46/63 [00:07<00:02,  5.80it/s][A
+
+ 75%|███████▍  | 47/63 [00:07<00:02,  5.80it/s][A
+
+ 76%|███████▌  | 48/63 [00:08<00:02,  5.80it/s][A
+
+ 78%|███████▊  | 49/63 [00:08<00:02,  5.80it/s][A
+
+ 79%|███████▉  | 50/63 [00:08<00:02,  5.82it/s][A
+
+ 81%|████████  | 51/63 [00:08<00:02,  5.81it/s][A
+
+ 83%|████████▎ | 52/63 [00:08<00:01,  5.82it/s][A
+
+ 84%|████████▍ | 53/63 [00:08<00:01,  5.82it/s][A
+
+ 86%|████████▌ | 54/63 [00:09<00:01,  5.82it/s][A
+
+ 87%|████████▋ | 55/63 [00:09<00:01,  5.82it/s][A
+
+ 89%|████████▉ | 56/63 [00:09<00:01,  5.82it/s][A
+
+ 90%|█████████ | 57/63 [00:09<00:01,  5.82it/s][A
+
+ 92%|█████████▏| 58/63 [00:09<00:00,  5.82it/s][A
+
+ 94%|█████████▎| 59/63 [00:09<00:00,  5.82it/s][A
+
+ 95%|█████████▌| 60/63 [00:10<00:00,  5.81it/s][A
+
+ 97%|█████████▋| 61/63 [00:10<00:00,  5.81it/s][A
+
+ 98%|█████████▊| 62/63 [00:10<00:00,  5.81it/s][A
+
+100%|██████████| 63/63 [00:10<00:00,  5.82it/s][A
+                                                 
+
+                                               
+[A{'eval_loss': 3.251953125, 'eval_runtime': 10.76, 'eval_samples_per_second': 46.468, 'eval_steps_per_second': 5.855, 'epoch': 0.4}
+
+ 40%|████      | 200/500 [15:33<22:37,  4.53s/it]
+
+100%|██████████| 63/63 [00:10<00:00,  5.82it/s][A
+
+                                               [A
+**********
+Sample 1 at step 200:
+'Á hvaða ári var Ísland stofnað sem lýðveldi? Það er ekki hægt að vera að vera að vera að vera að vera að vera að vera að vera að vera að vera að vera að vera að vera að'
+
+**********
+Sample 2 at step 200:
+'Hver eru helstu einkenni norðurljósa? Það er ekki eins og það er að vera að vera að vera að vera að vera að vera að vera að vera að vera að vera að vera að vera a'
+
+**********
+Cloze test 1:
+Prompt text: 'Ísland er fallegasta land í heimi, því það er fullt af <mask>'
+Predicted output -> 'Í, en það'
+
+**********
+Cloze test 2:
+Prompt text: 'Maturinn var svo góður, en ég gat ekki borðað meira vegna <mask>'
+Predicted output -> 'M'
+
+**********
+Cloze test 3:
+Prompt text: 'Ísland varð lýðveldi árið <mask>'
+Predicted output -> 'Í, en það'
+
+ 40%|████      | 201/500 [15:40<41:52,  8.40s/it]
+ 40%|████      | 202/500 [15:44<35:48,  7.21s/it]
+ 41%|████      | 203/500 [15:49<31:33,  6.38s/it]
+ 41%|████      | 204/500 [15:53<28:50,  5.85s/it]
+ 41%|████      | 205/500 [15:58<26:34,  5.40s/it]
+ 41%|████      | 206/500 [16:02<25:15,  5.16s/it]
+ 41%|████▏     | 207/500 [16:06<24:00,  4.92s/it]
+ 42%|████▏     | 208/500 [16:11<23:23,  4.81s/it]
+ 42%|████▏     | 209/500 [16:15<22:44,  4.69s/it]
+ 42%|████▏     | 210/500 [16:20<22:11,  4.59s/it]
+**********
+Sample 1 at step 210:
+'Á hvaða ári var Ísland stofnað sem lýðveldi? Það eru það sem það er að segja. Það eru það sem það er að segja. Það eru það sem það er a'
+
+**********
+Sample 2 at step 210:
+'Hver eru helstu einkenni norðurljósa? Það eru það sem það er að segja. Það eru það sem það er að segja. Það eru það sem það er a'
+
+**********
+Cloze test 1:
+Prompt text: 'Ísland er fallegasta land í heimi, því það er fullt af <mask>'
+Predicted output -> 'Í. Það er'
+
+**********
+Cloze test 2:
+Prompt text: 'Maturinn var svo góður, en ég gat ekki borðað meira vegna <mask>'
+Predicted output -> 'M'
+
+**********
+Cloze test 3:
+Prompt text: 'Ísland varð lýðveldi árið <mask>'
+Predicted output -> 'Í. Það er'
+
+ 42%|████▏     | 211/500 [16:27<25:41,  5.33s/it]
+ 42%|████▏     | 212/500 [16:31<24:28,  5.10s/it]
+ 43%|████▎     | 213/500 [16:36<23:21,  4.88s/it]
+ 43%|████▎     | 214/500 [16:40<22:48,  4.79s/it]
+ 43%|████▎     | 215/500 [16:45<22:13,  4.68s/it]
+ 43%|████▎     | 216/500 [16:49<21:49,  4.61s/it]
+ 43%|████▎     | 217/500 [16:54<21:45,  4.61s/it]
+ 44%|████▎     | 218/500 [16:58<21:19,  4.54s/it]
+ 44%|████▍     | 219/500 [17:03<21:02,  4.49s/it]
+ 44%|████▍     | 220/500 [17:07<20:48,  4.46s/it]
+**********
+Sample 1 at step 220:
+'Á hvaða ári var Ísland stofnað sem lýðveldi? Það er hægt að fá að það sé ekki að það sé að það sé að það sé að það sé að það sé að'
+
+**********
+Sample 2 at step 220:
+'Hver eru helstu einkenni norðurljósa? Það eru þeir sem eru að gera það. Það eru þeir sem eru að gera það. Það eru þeir sem eru að gera það'
+
+**********
+Cloze test 1:
+Prompt text: 'Ísland er fallegasta land í heimi, því það er fullt af <mask>'
+Predicted output -> 'Í, en það'
+
+**********
+Cloze test 2:
+Prompt text: 'Maturinn var svo góður, en ég gat ekki borðað meira vegna <mask>'
+Predicted output -> 'M'
+
+**********
+Cloze test 3:
+Prompt text: 'Ísland varð lýðveldi árið <mask>'
+Predicted output -> 'Í, en það'
+
+ 44%|████▍     | 221/500 [17:14<24:31,  5.28s/it]
+ 44%|████▍     | 222/500 [17:19<23:18,  5.03s/it]
+ 45%|████▍     | 223/500 [17:23<22:27,  4.87s/it]
+ 45%|████▍     | 224/500 [17:28<21:48,  4.74s/it]
+ 45%|████▌     | 225/500 [17:32<21:12,  4.63s/it]
+ 45%|████▌     | 226/500 [17:37<21:05,  4.62s/it]
+ 45%|████▌     | 227/500 [17:41<20:40,  4.54s/it]
+ 46%|████▌     | 228/500 [17:45<20:40,  4.56s/it]
+ 46%|████▌     | 229/500 [17:50<20:26,  4.53s/it]
+ 46%|████▌     | 230/500 [17:54<20:16,  4.50s/it]
+**********
+Sample 1 at step 230:
+'Á hvaða ári var Ísland stofnað sem lýðveldi? Það er ekki hægt að vera í þessum efnum að það sé ekki hægt að vera í þessum efnum. Það er ekki hægt að'
+
+**********
+Sample 2 at step 230:
+'Hver eru helstu einkenni norðurljósa? Það eru þeir sem eru í þeim eiginleika sem eru í þeim eiginleika sem eru í þeim eiginleika sem eru í þeim'
+
+**********
+Cloze test 1:
+Prompt text: 'Ísland er fallegasta land í heimi, því það er fullt af <mask>'
+Predicted output -> 'Í, en það'
+
+**********
+Cloze test 2:
+Prompt text: 'Maturinn var svo góður, en ég gat ekki borðað meira vegna <mask>'
+Predicted output -> 'M'
+
+**********
+Cloze test 3:
+Prompt text: 'Ísland varð lýðveldi árið <mask>'
+Predicted output -> 'Í, en það'
+
+ 46%|████▌     | 231/500 [18:01<23:38,  5.27s/it]
+ 46%|████▋     | 232/500 [18:06<22:37,  5.06s/it]
+ 47%|████▋     | 233/500 [18:10<21:37,  4.86s/it]
+ 47%|████▋     | 234/500 [18:15<21:11,  4.78s/it]
+ 47%|████▋     | 235/500 [18:19<20:39,  4.68s/it]
+ 47%|████▋     | 236/500 [18:24<20:17,  4.61s/it]
+ 47%|████▋     | 237/500 [18:28<20:06,  4.59s/it]
+ 48%|████▊     | 238/500 [18:33<19:49,  4.54s/it]
+ 48%|████▊     | 239/500 [18:37<19:33,  4.50s/it]
+ 48%|████▊     | 240/500 [18:42<19:21,  4.47s/it]
+**********
+Sample 1 at step 240:
+'Á hvaða ári var Ísland stofnað sem lýðveldi? Það eru þeir ekki aðeins aðeins aðeins aðeins aðeins aðeins aðeins aðeins aðeins aðeins a'
+
+**********
+Sample 2 at step 240:
+'Hver eru helstu einkenni norðurljósa? Það eru þeir ekki einhverjir sem hafa það áhrif á að þeir hafa það áhrif á að þeir hafa það áhrif á a'
+
+**********
+Cloze test 1:
+Prompt text: 'Ísland er fallegasta land í heimi, því það er fullt af <mask>'
+Predicted output -> 'Í. Það er'
+
+**********
+Cloze test 2:
+Prompt text: 'Maturinn var svo góður, en ég gat ekki borðað meira vegna <mask>'
+Predicted output -> 'M'
+
+**********
+Cloze test 3:
+Prompt text: 'Ísland varð lýðveldi árið <mask>'
+Predicted output -> 'Í. Það er'
+
+ 48%|████▊     | 241/500 [18:49<22:39,  5.25s/it]
+ 48%|████▊     | 242/500 [18:53<21:33,  5.01s/it]
+ 49%|████▊     | 243/500 [18:58<20:48,  4.86s/it]
+ 49%|████▉     | 244/500 [19:02<20:04,  4.71s/it]
+ 49%|████▉     | 245/500 [19:07<19:50,  4.67s/it]
+ 49%|████▉     | 246/500 [19:11<19:24,  4.58s/it]
+ 49%|████▉     | 247/500 [19:16<19:18,  4.58s/it]
+ 50%|████▉     | 248/500 [19:20<19:05,  4.55s/it]
+ 50%|████▉     | 249/500 [19:24<18:52,  4.51s/it]
+ 50%|█████     | 250/500 [19:29<18:51,  4.52s/it]
+**********
+Sample 1 at step 250:
+'Á hvaða ári var Ísland stofnað sem lýðveldi? Það eru þeir sem eru að stofna þessu. Það eru þeir sem eru að stofna þessu. Það eru þeir sem eru að'
+
+**********
+Sample 2 at step 250:
+'Hver eru helstu einkenni norðurljósa? Hvað eru þeir sem eru í þessum efnum? Hvað eru þeir sem eru í þessum efnum? Hvað eru þeir sem eru í þessum efnum'
+
+**********
+Cloze test 1:
+Prompt text: 'Ísland er fallegasta land í heimi, því það er fullt af <mask>'
+Predicted output -> 'Í. Þetta eru'
+
+**********
+Cloze test 2:
+Prompt text: 'Maturinn var svo góður, en ég gat ekki borðað meira vegna <mask>'
+Predicted output -> 'M'
+
+**********
+Cloze test 3:
+Prompt text: 'Ísland varð lýðveldi árið <mask>'
+Predicted output -> 'Í. Þetta eru'
+
+ 50%|█████     | 251/500 [19:36<21:56,  5.29s/it]
+ 50%|█████     | 252/500 [19:40<20:43,  5.02s/it]
+ 51%|█████     | 253/500 [19:45<20:02,  4.87s/it]
+ 51%|█████     | 254/500 [19:49<19:26,  4.74s/it]
+ 51%|█████     | 255/500 [19:54<19:01,  4.66s/it]
+ 51%|█████     | 256/500 [19:59<18:51,  4.64s/it]
+ 51%|█████▏    | 257/500 [20:03<18:30,  4.57s/it]
+ 52%|█████▏    | 258/500 [20:07<18:23,  4.56s/it]
+ 52%|█████▏    | 259/500 [20:12<18:06,  4.51s/it]
+ 52%|█████▏    | 260/500 [20:16<18:07,  4.53s/it]
+**********
+Sample 1 at step 260:
+'Á hvaða ári var Ísland stofnað sem lýðveldi? Það er ekki hægt að vera að það eru ekki einhverjir að styðja það. Það er ekki hægt að vera að þ'
+
+**********
+Sample 2 at step 260:
+'Hver eru helstu einkenni norðurljósa? Það er ekki hægt að vera að það eru það sem þú ert að tala um. Það er ekki hægt að vera að það eru'
+
+**********
+Cloze test 1:
+Prompt text: 'Ísland er fallegasta land í heimi, því það er fullt af <mask>'
+Predicted output -> 'Í. Það er'
+
+**********
+Cloze test 2:
+Prompt text: 'Maturinn var svo góður, en ég gat ekki borðað meira vegna <mask>'
+Predicted output -> 'M'
+
+**********
+Cloze test 3:
+Prompt text: 'Ísland varð lýðveldi árið <mask>'
+Predicted output -> 'Í. Það er'
+
+ 52%|█████▏    | 261/500 [20:23<20:57,  5.26s/it]
+ 52%|█████▏    | 262/500 [20:28<20:29,  5.17s/it]
+ 53%|█████▎    | 263/500 [20:33<19:29,  4.93s/it]
+ 53%|█████▎    | 264/500 [20:37<18:46,  4.77s/it]
+ 53%|█████▎    | 265/500 [20:42<18:15,  4.66s/it]
+ 53%|█████▎    | 266/500 [20:46<17:53,  4.59s/it]
+ 53%|█████▎    | 267/500 [20:50<17:39,  4.55s/it]
+ 54%|█████▎    | 268/500 [20:55<17:26,  4.51s/it]
+ 54%|█████▍    | 269/500 [21:00<17:54,  4.65s/it]
+ 54%|█████▍    | 270/500 [21:04<17:33,  4.58s/it]
+**********
+Sample 1 at step 270:
+'Á hvaða ári var Ísland stofnað sem lýðveldi? Það eru það ekki allir að það séu ekki allir að það séu ekki allir að það séu ekki allir að það'
+
+**********
+Sample 2 at step 270:
+'Hver eru helstu einkenni norðurljósa? Það eru það allt sem þú ert að gera. Það eru það allt sem þú ert að gera. Það eru það allt sem þú ert'
+
+**********
+Cloze test 1:
+Prompt text: 'Ísland er fallegasta land í heimi, því það er fullt af <mask>'
+Predicted output -> 'Í, en það'
+
+**********
+Cloze test 2:
+Prompt text: 'Maturinn var svo góður, en ég gat ekki borðað meira vegna <mask>'
+Predicted output -> 'M'
+
+**********
+Cloze test 3:
+Prompt text: 'Ísland varð lýðveldi árið <mask>'
+Predicted output -> 'Í, en það'
+
+ 54%|█████▍    | 271/500 [21:11<20:12,  5.29s/it]
+ 54%|█████▍    | 272/500 [21:16<19:04,  5.02s/it]
+ 55%|█████▍    | 273/500 [21:20<18:18,  4.84s/it]
+ 55%|█████▍    | 274/500 [21:24<17:47,  4.72s/it]
+ 55%|█████▌    | 275/500 [21:29<17:25,  4.65s/it]
+ 55%|█████▌    | 276/500 [21:34<17:47,  4.76s/it]
+ 55%|█████▌    | 277/500 [21:38<17:18,  4.66s/it]
+ 56%|█████▌    | 278/500 [21:43<16:55,  4.57s/it]
+ 56%|█████▌    | 279/500 [21:47<16:50,  4.57s/it]
+ 56%|█████▌    | 280/500 [21:52<16:34,  4.52s/it]
+**********
+Sample 1 at step 280:
+'Á hvaða ári var Ísland stofnað sem lýðveldi? Það eru þær sem eru að stofna. Það eru þær sem eru að stofna. Það eru þær sem eru að stofna. Þa'
+
+**********
+Sample 2 at step 280:
+'Hver eru helstu einkenni norðurljósa? Það eru þeir sem eru að sjá þetta. Þetta eru þeir sem eru að sjá þetta. Þetta eru þeir sem eru að sjá þetta. Þ'
+
+**********
+Cloze test 1:
+Prompt text: 'Ísland er fallegasta land í heimi, því það er fullt af <mask>'
+Predicted output -> 'Í, en það'
+
+**********
+Cloze test 2:
+Prompt text: 'Maturinn var svo góður, en ég gat ekki borðað meira vegna <mask>'
+Predicted output -> 'M'
+
+**********
+Cloze test 3:
+Prompt text: 'Ísland varð lýðveldi árið <mask>'
+Predicted output -> 'Í, en það'
+
+ 56%|█████▌    | 281/500 [21:59<19:19,  5.29s/it]
+ 56%|█████▋    | 282/500 [22:03<18:18,  5.04s/it]
+ 57%|█████▋    | 283/500 [22:08<18:07,  5.01s/it]
+ 57%|█████▋    | 284/500 [22:13<17:24,  4.83s/it]
+ 57%|█████▋    | 285/500 [22:17<17:01,  4.75s/it]
+ 57%|█████▋    | 286/500 [22:22<16:32,  4.64s/it]
+ 57%|█████▋    | 287/500 [22:26<16:25,  4.63s/it]
+ 58%|█████▊    | 288/500 [22:31<16:11,  4.58s/it]
+ 58%|█████▊    | 289/500 [22:35<16:01,  4.56s/it]
+ 58%|█████▊    | 290/500 [22:40<15:59,  4.57s/it]
+**********
+Sample 1 at step 290:
+'Á hvaða ári var Ísland stofnað sem lýðveldi? Það eru þeir sem eru að standa í þessu máli. Það eru þeir sem eru að standa í þessu máli. Það eru þeir sem'
+
+**********
+Sample 2 at step 290:
+'Hver eru helstu einkenni norðurljósa? Það eru þeir sem eru að hjálpa þessu. Það eru þeir sem eru að hjálpa þessu. Það eru þeir sem eru'
+
+**********
+Cloze test 1:
+Prompt text: 'Ísland er fallegasta land í heimi, því það er fullt af <mask>'
+Predicted output -> 'Í, þar sem þ'
+
+**********
+Cloze test 2:
+Prompt text: 'Maturinn var svo góður, en ég gat ekki borðað meira vegna <mask>'
+Predicted output -> 'M'
+
+**********
+Cloze test 3:
+Prompt text: 'Ísland varð lýðveldi árið <mask>'
+Predicted output -> 'Í, þar sem þ'
+
+ 58%|█████▊    | 291/500 [22:47<18:32,  5.33s/it]
+ 58%|█████▊    | 292/500 [22:51<17:36,  5.08s/it]
+ 59%|█████▊    | 293/500 [22:56<16:54,  4.90s/it]
+ 59%|█████▉    | 294/500 [23:00<16:29,  4.80s/it]
+ 59%|█████▉    | 295/500 [23:05<16:09,  4.73s/it]
+ 59%|█████▉    | 296/500 [23:10<16:28,  4.85s/it]
+ 59%|█████▉    | 297/500 [23:15<16:04,  4.75s/it]
+ 60%|█████▉    | 298/500 [23:19<15:47,  4.69s/it]
+ 60%|█████▉    | 299/500 [23:24<15:32,  4.64s/it]
+ 60%|██████    | 300/500 [23:28<15:26,  4.63s/it][INFO|trainer.py:3138] 2023-05-09 23:27:39,634 >> ***** Running Evaluation *****
+[INFO|trainer.py:3140] 2023-05-09 23:27:39,634 >>   Num examples = 500
+[INFO|trainer.py:3143] 2023-05-09 23:27:39,634 >>   Batch size = 8
+
+
+  0%|          | 0/63 [00:00<?, ?it/s][A
+
+  3%|▎         | 2/63 [00:00<00:05, 11.63it/s][A
+
+  6%|▋         | 4/63 [00:00<00:08,  7.31it/s][A
+
+  8%|▊         | 5/63 [00:00<00:08,  6.78it/s][A
+
+ 10%|▉         | 6/63 [00:00<00:08,  6.46it/s][A
+
+ 11%|█         | 7/63 [00:01<00:08,  6.25it/s][A
+
+ 13%|█▎        | 8/63 [00:01<00:08,  6.11it/s][A
+
+ 14%|█▍        | 9/63 [00:01<00:08,  6.02it/s][A
+
+ 16%|█▌        | 10/63 [00:01<00:08,  5.96it/s][A
+
+ 17%|█▋        | 11/63 [00:01<00:08,  5.91it/s][A
+
+ 19%|█▉        | 12/63 [00:01<00:08,  5.88it/s][A
+
+ 21%|██        | 13/63 [00:02<00:08,  5.86it/s][A
+
+ 22%|██▏       | 14/63 [00:02<00:08,  5.84it/s][A
+
+ 24%|██▍       | 15/63 [00:02<00:08,  5.83it/s][A
+
+ 25%|██▌       | 16/63 [00:02<00:08,  5.82it/s][A
+
+ 27%|██▋       | 17/63 [00:02<00:07,  5.82it/s][A
+
+ 29%|██▊       | 18/63 [00:02<00:07,  5.81it/s][A
+
+ 30%|███       | 19/63 [00:03<00:07,  5.76it/s][A
+
+ 32%|███▏      | 20/63 [00:03<00:07,  5.82it/s][A
+
+ 33%|███▎      | 21/63 [00:03<00:07,  5.82it/s][A
+
+ 35%|███▍      | 22/63 [00:03<00:07,  5.81it/s][A
+
+ 37%|███▋      | 23/63 [00:03<00:06,  5.81it/s][A
+
+ 38%|███▊      | 24/63 [00:03<00:06,  5.81it/s][A
+
+ 40%|███▉      | 25/63 [00:04<00:06,  5.81it/s][A
+
+ 41%|████▏     | 26/63 [00:04<00:06,  5.81it/s][A
+
+ 43%|████▎     | 27/63 [00:04<00:06,  5.80it/s][A
+
+ 44%|████▍     | 28/63 [00:04<00:06,  5.81it/s][A
+
+ 46%|████▌     | 29/63 [00:04<00:05,  5.80it/s][A
+
+ 48%|████▊     | 30/63 [00:04<00:05,  5.80it/s][A
+
+ 49%|████▉     | 31/63 [00:05<00:05,  5.80it/s][A
+
+ 51%|█████     | 32/63 [00:05<00:05,  5.80it/s][A
+
+ 52%|█████▏    | 33/63 [00:05<00:05,  5.80it/s][A
+
+ 54%|█████▍    | 34/63 [00:05<00:04,  5.80it/s][A
+
+ 56%|█████▌    | 35/63 [00:05<00:04,  5.81it/s][A
+
+ 57%|█████▋    | 36/63 [00:06<00:04,  5.81it/s][A
+
+ 59%|█████▊    | 37/63 [00:06<00:04,  5.81it/s][A
+
+ 60%|██████    | 38/63 [00:06<00:04,  5.80it/s][A
+
+ 62%|██████▏   | 39/63 [00:06<00:04,  5.80it/s][A
+
+ 63%|██████▎   | 40/63 [00:06<00:03,  5.80it/s][A
+
+ 65%|██████▌   | 41/63 [00:06<00:03,  5.80it/s][A
+
+ 67%|██████▋   | 42/63 [00:07<00:03,  5.80it/s][A
+
+ 68%|██████▊   | 43/63 [00:07<00:03,  5.81it/s][A
+
+ 70%|██████▉   | 44/63 [00:07<00:03,  5.80it/s][A
+
+ 71%|███████▏  | 45/63 [00:07<00:03,  5.81it/s][A
+
+ 73%|███████▎  | 46/63 [00:07<00:02,  5.81it/s][A
+
+ 75%|███████▍  | 47/63 [00:07<00:02,  5.80it/s][A
+
+ 76%|███████▌  | 48/63 [00:08<00:02,  5.80it/s][A
+
+ 78%|███████▊  | 49/63 [00:08<00:02,  5.80it/s][A
+
+ 79%|███████▉  | 50/63 [00:08<00:02,  5.80it/s][A
+
+ 81%|████████  | 51/63 [00:08<00:02,  5.80it/s][A
+
+ 83%|████████▎ | 52/63 [00:08<00:01,  5.81it/s][A
+
+ 84%|████████▍ | 53/63 [00:08<00:01,  5.80it/s][A
+
+ 86%|████████▌ | 54/63 [00:09<00:01,  5.80it/s][A
+
+ 87%|████████▋ | 55/63 [00:09<00:01,  5.81it/s][A
+
+ 89%|████████▉ | 56/63 [00:09<00:01,  5.80it/s][A
+
+ 90%|█████████ | 57/63 [00:09<00:01,  5.80it/s][A
+
+ 92%|█████████▏| 58/63 [00:09<00:00,  5.80it/s][A
+
+ 94%|█████████▎| 59/63 [00:09<00:00,  5.79it/s][A
+
+ 95%|█████████▌| 60/63 [00:10<00:00,  5.80it/s][A
+
+ 97%|█████████▋| 61/63 [00:10<00:00,  5.80it/s][A
+
+ 98%|█████████▊| 62/63 [00:10<00:00,  5.80it/s][A
+
+100%|██████████| 63/63 [00:10<00:00,  5.81it/s][A
+                                                 
+
+                                               
+[A{'eval_loss': 3.091796875, 'eval_runtime': 10.7797, 'eval_samples_per_second': 46.384, 'eval_steps_per_second': 5.844, 'epoch': 0.6}
+
+ 60%|██████    | 300/500 [23:39<15:26,  4.63s/it]
+
+100%|██████████| 63/63 [00:10<00:00,  5.81it/s][A
+
+                                               [A
+**********
+Sample 1 at step 300:
+'Á hvaða ári var Ísland stofnað sem lýðveldi? Það eru ekki allir að gera það. Það eru ekki allir að gera það. Það eru ekki allir að gera það. Þa'
+
+**********
+Sample 2 at step 300:
+'Hver eru helstu einkenni norðurljósa? Það eru ekki allir að gera þetta. Það eru ekki allir að gera þetta. Það eru ekki allir að gera þetta. Það eru'
+
+**********
+Cloze test 1:
+Prompt text: 'Ísland er fallegasta land í heimi, því það er fullt af <mask>'
+Predicted output -> 'Í, enda eru'
+
+**********
+Cloze test 2:
+Prompt text: 'Maturinn var svo góður, en ég gat ekki borðað meira vegna <mask>'
+Predicted output -> 'M'
+
+**********
+Cloze test 3:
+Prompt text: 'Ísland varð lýðveldi árið <mask>'
+Predicted output -> 'Í, en það'
+
+ 60%|██████    | 301/500 [23:46<28:18,  8.53s/it]
+ 60%|██████    | 302/500 [23:51<24:20,  7.38s/it]
+ 61%|██████    | 303/500 [23:55<21:23,  6.52s/it]
+ 61%|██████    | 304/500 [24:00<19:30,  5.97s/it]
+ 61%|██████    | 305/500 [24:04<18:02,  5.55s/it]
+ 61%|██████    | 306/500 [24:09<17:00,  5.26s/it]
+ 61%|██████▏   | 307/500 [24:14<16:17,  5.06s/it]
+ 62%|██████▏   | 308/500 [24:18<15:39,  4.89s/it]
+ 62%|██████▏   | 309/500 [24:23<15:23,  4.84s/it]
+ 62%|██████▏   | 310/500 [24:27<14:59,  4.73s/it]
+**********
+Sample 1 at step 310:
+'Á hvaða ári var Ísland stofnað sem lýðveldi? Það er ekki hægt að það sé ekki hægt að það sé ekki hægt að það sé ekki hægt að það sé ekki'
+
+**********
+Sample 2 at step 310:
+'Hver eru helstu einkenni norðurljósa? Það er ekki hægt að það sé ekki hægt að það sé ekki hægt að það sé ekki hægt að það sé ekki'
+
+**********
+Cloze test 1:
+Prompt text: 'Ísland er fallegasta land í heimi, því það er fullt af <mask>'
+Predicted output -> 'Í. Það er'
+
+**********
+Cloze test 2:
+Prompt text: 'Maturinn var svo góður, en ég gat ekki borðað meira vegna <mask>'
+Predicted output -> 'M'
+
+**********
+Cloze test 3:
+Prompt text: 'Ísland varð lýðveldi árið <mask>'
+Predicted output -> 'Í. Það er'
+
+ 62%|██████▏   | 311/500 [24:34<17:16,  5.49s/it]
+ 62%|██████▏   | 312/500 [24:39<16:19,  5.21s/it]
+ 63%|██████▎   | 313/500 [24:44<16:04,  5.16s/it]
+ 63%|██████▎   | 314/500 [24:49<15:23,  4.96s/it]
+ 63%|██████▎   | 315/500 [24:53<15:01,  4.87s/it]
+ 63%|██████▎   | 316/500 [24:58<14:36,  4.76s/it]
+ 63%|██████▎   | 317/500 [25:02<14:28,  4.74s/it]
+ 64%|██████▎   | 318/500 [25:07<14:12,  4.68s/it]
+ 64%|██████▍   | 319/500 [25:12<14:03,  4.66s/it]
+ 64%|██████▍   | 320/500 [25:16<13:54,  4.64s/it]
+**********
+Sample 1 at step 320:
+'Á hvaða ári var Ísland stofnað sem lýðveldi? Það er ekki hægt að gera það. Það eru þau aðeins að því að það eru ekki aðeins að því að'
+
+**********
+Sample 2 at step 320:
+'Hver eru helstu einkenni norðurljósa? Það eru þau sem eru aðeins aðeins aðeins aðeins aðeins aðeins aðeins aðeins aðeins aðeins'
+
+**********
+Cloze test 1:
+Prompt text: 'Ísland er fallegasta land í heimi, því það er fullt af <mask>'
+Predicted output -> 'Í, enda eru'
+
+**********
+Cloze test 2:
+Prompt text: 'Maturinn var svo góður, en ég gat ekki borðað meira vegna <mask>'
+Predicted output -> 'M'
+
+**********
+Cloze test 3:
+Prompt text: 'Ísland varð lýðveldi árið <mask>'
+Predicted output -> 'Í, enda eru'
+
+ 64%|██████▍   | 321/500 [25:23<16:05,  5.39s/it]
+ 64%|██████▍   | 322/500 [25:28<15:13,  5.13s/it]
+ 65%|██████▍   | 323/500 [25:32<14:41,  4.98s/it]
+ 65%|██████▍   | 324/500 [25:37<14:10,  4.83s/it]
+ 65%|██████▌   | 325/500 [25:42<14:12,  4.87s/it]
+ 65%|██████▌   | 326/500 [25:46<13:50,  4.77s/it]
+ 65%|██████▌   | 327/500 [25:51<13:37,  4.73s/it]
+ 66%|██████▌   | 328/500 [25:56<13:17,  4.64s/it]
+ 66%|██████▌   | 329/500 [26:00<13:08,  4.61s/it]
+ 66%|██████▌   | 330/500 [26:05<12:56,  4.57s/it]
+**********
+Sample 1 at step 330:
+'Á hvaða ári var Ísland stofnað sem lýðveldi? Það var ekki hægt að gera það að því að það var ekki hægt að gera það að því að það var ekki hæ'
+
+**********
+Sample 2 at step 330:
+'Hver eru helstu einkenni norðurljósa? Það eru þeir sem hafa verið að skoða þetta. Það eru þeir sem hafa verið að skoða þetta. Það eru þeir sem'
+
+**********
+Cloze test 1:
+Prompt text: 'Ísland er fallegasta land í heimi, því það er fullt af <mask>'
+Predicted output -> 'Í, en það'
+
+**********
+Cloze test 2:
+Prompt text: 'Maturinn var svo góður, en ég gat ekki borðað meira vegna <mask>'
+Predicted output -> 'M'
+
+**********
+Cloze test 3:
+Prompt text: 'Ísland varð lýðveldi árið <mask>'
+Predicted output -> 'Í, en það'
+
+ 66%|██████▌   | 331/500 [26:12<15:22,  5.46s/it]
+ 66%|██████▋   | 332/500 [26:16<14:24,  5.14s/it]
+ 67%|██████▋   | 333/500 [26:21<13:41,  4.92s/it]
+ 67%|██████▋   | 334/500 [26:25<13:20,  4.83s/it]
+ 67%|██████▋   | 335/500 [26:30<12:55,  4.70s/it]
+ 67%|██████▋   | 336/500 [26:35<12:47,  4.68s/it]
+ 67%|██████▋   | 337/500 [26:39<12:33,  4.62s/it]
+ 68%|██████▊   | 338/500 [26:44<12:22,  4.58s/it]
+ 68%|██████▊   | 339/500 [26:48<12:15,  4.57s/it]
+ 68%|██████▊   | 340/500 [26:52<12:03,  4.52s/it]
+**********
+Sample 1 at step 340:
+'Á hvaða ári var Ísland stofnað sem lýðveldi? Það er alveg rétt að það eru aðeins þrjú ár sem Ísland er stofnað. Það er alveg rétt að það eru að'
+
+**********
+Sample 2 at step 340:
+'Hver eru helstu einkenni norðurljósa? Það er alveg rétt að það sé ekki aðeins að það sé aðeins að það sé aðeins að það sé aðeins'
+
+**********
+Cloze test 1:
+Prompt text: 'Ísland er fallegasta land í heimi, því það er fullt af <mask>'
+Predicted output -> 'Í, enda er þ'
+
+**********
+Cloze test 2:
+Prompt text: 'Maturinn var svo góður, en ég gat ekki borðað meira vegna <mask>'
+Predicted output -> 'M'
+
+**********
+Cloze test 3:
+Prompt text: 'Ísland varð lýðveldi árið <mask>'
+Predicted output -> 'Í. Það er'
+
+ 68%|██████▊   | 341/500 [26:59<13:57,  5.27s/it]
+ 68%|██████▊   | 342/500 [27:04<13:19,  5.06s/it]
+ 69%|██████▊   | 343/500 [27:08<12:45,  4.88s/it]
+ 69%|██████▉   | 344/500 [27:13<12:22,  4.76s/it]
+ 69%|██████▉   | 345/500 [27:18<12:12,  4.73s/it]
+ 69%|██████▉   | 346/500 [27:22<11:54,  4.64s/it]
+ 69%|██████▉   | 347/500 [27:27<11:41,  4.59s/it]
+ 70%|██████▉   | 348/500 [27:31<11:31,  4.55s/it]
+ 70%|██████▉   | 349/500 [27:35<11:22,  4.52s/it]
+ 70%|███████   | 350/500 [27:40<11:17,  4.52s/it]
+**********
+Sample 1 at step 350:
+'Á hvaða ári var Ísland stofnað sem lýðveldi? Það eru þeir sem eru að stofna stjórnarskrárinnar. Þeir eru að stofna stjórnarskrárinnar. Þeir eru að'
+
+**********
+Sample 2 at step 350:
+'Hver eru helstu einkenni norðurljósa? Það eru þeir sem eru í hverju. Það eru þeir sem eru í hverju. Það eru þeir sem eru í hverju. Það eru'
+
+**********
+Cloze test 1:
+Prompt text: 'Ísland er fallegasta land í heimi, því það er fullt af <mask>'
+Predicted output -> 'Í, en það'
+
+**********
+Cloze test 2:
+Prompt text: 'Maturinn var svo góður, en ég gat ekki borðað meira vegna <mask>'
+Predicted output -> 'M'
+
+**********
+Cloze test 3:
+Prompt text: 'Ísland varð lýðveldi árið <mask>'
+Predicted output -> 'Í, en það'
+
+ 70%|███████   | 351/500 [27:47<13:07,  5.28s/it]
+ 70%|███████   | 352/500 [27:52<12:30,  5.07s/it]
+ 71%|███████   | 353/500 [27:56<11:56,  4.88s/it]
+ 71%|███████   | 354/500 [28:01<11:39,  4.79s/it]
+ 71%|███████   | 355/500 [28:05<11:21,  4.70s/it]
+ 71%|███████   | 356/500 [28:10<11:13,  4.68s/it]
+ 71%|███████▏  | 357/500 [28:14<11:01,  4.63s/it]
+ 72%|███████▏  | 358/500 [28:19<10:51,  4.59s/it]
+ 72%|███████▏  | 359/500 [28:23<10:48,  4.60s/it]
+ 72%|███████▏  | 360/500 [28:28<10:38,  4.56s/it]
+**********
+Sample 1 at step 360:
+'Á hvaða ári var Ísland stofnað sem lýðveldi? Það er ekki hægt að segja að það séu ekki allir að fara í þessu. Það er ekki hægt að segja að það'
+
+**********
+Sample 2 at step 360:
+'Hver eru helstu einkenni norðurljósa? Það eru þeir sem hafa verið að fara í þessu. Það eru þeir sem hafa verið að fara í þessu. Það eru þeir sem'
+
+**********
+Cloze test 1:
+Prompt text: 'Ísland er fallegasta land í heimi, því það er fullt af <mask>'
+Predicted output -> 'Í, það er'
+
+**********
+Cloze test 2:
+Prompt text: 'Maturinn var svo góður, en ég gat ekki borðað meira vegna <mask>'
+Predicted output -> 'M'
+
+**********
+Cloze test 3:
+Prompt text: 'Ísland varð lýðveldi árið <mask>'
+Predicted output -> 'Í, þótt þ'
+
+ 72%|███████▏  | 361/500 [28:35<12:29,  5.39s/it]
+ 72%|███████▏  | 362/500 [28:40<11:44,  5.10s/it]
+ 73%|███████▎  | 363/500 [28:44<11:22,  4.99s/it]
+ 73%|███████▎  | 364/500 [28:49<10:59,  4.85s/it]
+ 73%|███████▎  | 365/500 [28:53<10:41,  4.75s/it]
+ 73%|███████▎  | 366/500 [28:58<10:30,  4.71s/it]
+ 73%|███████▎  | 367/500 [29:02<10:16,  4.63s/it]
+ 74%|███████▎  | 368/500 [29:07<10:12,  4.64s/it]
+ 74%|███████▍  | 369/500 [29:12<10:01,  4.59s/it]
+ 74%|███████▍  | 370/500 [29:16<09:59,  4.61s/it]
+**********
+Sample 1 at step 370:
+'Á hvaða ári var Ísland stofnað sem lýðveldi? Það eru þær þrjár vikur sem ég er að segja það. Það eru þær þrjár vikur sem ég er að segja það. Þa'
+
+**********
+Sample 2 at step 370:
+'Hver eru helstu einkenni norðurljósa? Það eru þær sem eru í raun og veru ekki í raun og veru. Það eru þær sem eru í raun og veru ekki í raun og veru.'
+
+**********
+Cloze test 1:
+Prompt text: 'Ísland er fallegasta land í heimi, því það er fullt af <mask>'
+Predicted output -> 'Í. Það er'
+
+**********
+Cloze test 2:
+Prompt text: 'Maturinn var svo góður, en ég gat ekki borðað meira vegna <mask>'
+Predicted output -> 'M'
+
+**********
+Cloze test 3:
+Prompt text: 'Ísland varð lýðveldi árið <mask>'
+Predicted output -> 'Í. Það er'
+
+ 74%|███████▍  | 371/500 [29:23<11:35,  5.39s/it]
+ 74%|███████▍  | 372/500 [29:29<11:19,  5.31s/it]
+ 75%|███████▍  | 373/500 [29:33<10:43,  5.06s/it]
+ 75%|███████▍  | 374/500 [29:38<10:16,  4.89s/it]
+ 75%|███████▌  | 375/500 [29:42<09:55,  4.76s/it]
+ 75%|███████▌  | 376/500 [29:47<09:45,  4.72s/it]
+ 75%|███████▌  | 377/500 [29:51<09:33,  4.66s/it]
+ 76%|███████▌  | 378/500 [29:56<09:39,  4.75s/it]
+ 76%|███████▌  | 379/500 [30:01<09:26,  4.68s/it]
+ 76%|███████▌  | 380/500 [30:05<09:13,  4.61s/it]
+**********
+Sample 1 at step 380:
+'Á hvaða ári var Ísland stofnað sem lýðveldi? Það eru þeir sem hafa áhrif á því að það eru þeir sem hafa áhrif á því að það eru þeir sem hafa áhrif á'
+
+**********
+Sample 2 at step 380:
+'Hver eru helstu einkenni norðurljósa? Það eru þeir sem hafa áhuga á því að þeir hafa áhuga á því að þeir hafa áhuga á því að þeir hafa áhuga á'
+
+**********
+Cloze test 1:
+Prompt text: 'Ísland er fallegasta land í heimi, því það er fullt af <mask>'
+Predicted output -> 'Í. Það er'
+
+**********
+Cloze test 2:
+Prompt text: 'Maturinn var svo góður, en ég gat ekki borðað meira vegna <mask>'
+Predicted output -> 'M'
+
+**********
+Cloze test 3:
+Prompt text: 'Ísland varð lýðveldi árið <mask>'
+Predicted output -> 'Í, " ", "'
+
+ 76%|███████▌  | 381/500 [30:12<10:40,  5.38s/it]
+ 76%|███████▋  | 382/500 [30:17<10:09,  5.17s/it]
+ 77%|███████▋  | 383/500 [30:21<09:41,  4.97s/it]
+ 77%|███████▋  | 384/500 [30:26<09:21,  4.84s/it]
+ 77%|███████▋  | 385/500 [30:31<09:07,  4.76s/it]
+ 77%|███████▋  | 386/500 [30:35<08:53,  4.68s/it]
+ 77%|███████▋  | 387/500 [30:39<08:41,  4.61s/it]
+ 78%|███████▊  | 388/500 [30:44<08:33,  4.59s/it]
+ 78%|███████▊  | 389/500 [30:48<08:25,  4.55s/it]
+ 78%|███████▊  | 390/500 [30:53<08:20,  4.55s/it]
+**********
+Sample 1 at step 390:
+'Á hvaða ári var Ísland stofnað sem lýðveldi? Það eru því ekki eins og það eru það sem er að ræða. Það eru það sem er að ræða. Það eru þ'
+
+**********
+Sample 2 at step 390:
+'Hver eru helstu einkenni norðurljósa? Hver eru helstu einkenni norðurljósa? Hver eru helstu einkenni norðurljósa? Hver eru helstu einkenni norðurljósa? Hver'
+
+**********
+Cloze test 1:
+Prompt text: 'Ísland er fallegasta land í heimi, því það er fullt af <mask>'
+Predicted output -> 'Í. Það er'
+
+**********
+Cloze test 2:
+Prompt text: 'Maturinn var svo góður, en ég gat ekki borðað meira vegna <mask>'
+Predicted output -> 'M'
+
+**********
+Cloze test 3:
+Prompt text: 'Ísland varð lýðveldi árið <mask>'
+Predicted output -> 'Í. Það er'
+
+ 78%|███████▊  | 391/500 [31:00<09:44,  5.36s/it]
+ 78%|███████▊  | 392/500 [31:05<09:13,  5.12s/it]
+ 79%|███████▊  | 393/500 [31:09<08:46,  4.92s/it]
+ 79%|███████▉  | 394/500 [31:14<08:30,  4.82s/it]
+ 79%|███████▉  | 395/500 [31:18<08:17,  4.73s/it]
+ 79%|███████▉  | 396/500 [31:23<08:05,  4.67s/it]
+ 79%|███████▉  | 397/500 [31:28<08:02,  4.69s/it]
+ 80%|███████▉  | 398/500 [31:32<07:51,  4.62s/it]
+ 80%|███████▉  | 399/500 [31:37<07:48,  4.64s/it]
+ 80%|████████  | 400/500 [31:41<07:38,  4.59s/it][INFO|trainer.py:3138] 2023-05-09 23:35:52,614 >> ***** Running Evaluation *****
+[INFO|trainer.py:3140] 2023-05-09 23:35:52,614 >>   Num examples = 500
+[INFO|trainer.py:3143] 2023-05-09 23:35:52,614 >>   Batch size = 8
+
+
+  0%|          | 0/63 [00:00<?, ?it/s][A
+
+  3%|▎         | 2/63 [00:00<00:05, 11.68it/s][A
+
+  6%|▋         | 4/63 [00:00<00:08,  7.34it/s][A
+
+  8%|▊         | 5/63 [00:00<00:08,  6.81it/s][A
+
+ 10%|▉         | 6/63 [00:00<00:08,  6.49it/s][A
+
+ 11%|█         | 7/63 [00:01<00:08,  6.27it/s][A
+
+ 13%|█▎        | 8/63 [00:01<00:08,  6.14it/s][A
+
+ 14%|█▍        | 9/63 [00:01<00:08,  6.02it/s][A
+
+ 16%|█▌        | 10/63 [00:01<00:08,  5.96it/s][A
+
+ 17%|█▋        | 11/63 [00:01<00:08,  5.91it/s][A
+
+ 19%|█▉        | 12/63 [00:01<00:08,  5.88it/s][A
+
+ 21%|██        | 13/63 [00:02<00:08,  5.86it/s][A
+
+ 22%|██▏       | 14/63 [00:02<00:08,  5.84it/s][A
+
+ 24%|██▍       | 15/63 [00:02<00:08,  5.83it/s][A
+
+ 25%|██▌       | 16/63 [00:02<00:08,  5.82it/s][A
+
+ 27%|██▋       | 17/63 [00:02<00:07,  5.82it/s][A
+
+ 29%|██▊       | 18/63 [00:02<00:07,  5.81it/s][A
+
+ 30%|███       | 19/63 [00:03<00:07,  5.81it/s][A
+
+ 32%|███▏      | 20/63 [00:03<00:07,  5.81it/s][A
+
+ 33%|███▎      | 21/63 [00:03<00:07,  5.81it/s][A
+
+ 35%|███▍      | 22/63 [00:03<00:07,  5.81it/s][A
+
+ 37%|███▋      | 23/63 [00:03<00:06,  5.81it/s][A
+
+ 38%|███▊      | 24/63 [00:03<00:06,  5.80it/s][A
+
+ 40%|███▉      | 25/63 [00:04<00:06,  5.80it/s][A
+
+ 41%|████▏     | 26/63 [00:04<00:06,  5.80it/s][A
+
+ 43%|████▎     | 27/63 [00:04<00:06,  5.80it/s][A
+
+ 44%|████▍     | 28/63 [00:04<00:06,  5.81it/s][A
+
+ 46%|████▌     | 29/63 [00:04<00:05,  5.81it/s][A
+
+ 48%|████▊     | 30/63 [00:04<00:05,  5.81it/s][A
+
+ 49%|████▉     | 31/63 [00:05<00:05,  5.81it/s][A
+
+ 51%|█████     | 32/63 [00:05<00:05,  5.81it/s][A
+
+ 52%|█████▏    | 33/63 [00:05<00:05,  5.80it/s][A
+
+ 54%|█████▍    | 34/63 [00:05<00:04,  5.80it/s][A
+
+ 56%|█████▌    | 35/63 [00:05<00:04,  5.80it/s][A
+
+ 57%|█████▋    | 36/63 [00:06<00:04,  5.80it/s][A
+
+ 59%|█████▊    | 37/63 [00:06<00:04,  5.80it/s][A
+
+ 60%|██████    | 38/63 [00:06<00:04,  5.80it/s][A
+
+ 62%|██████▏   | 39/63 [00:06<00:04,  5.80it/s][A
+
+ 63%|██████▎   | 40/63 [00:06<00:03,  5.80it/s][A
+
+ 65%|██████▌   | 41/63 [00:06<00:03,  5.80it/s][A
+
+ 67%|██████▋   | 42/63 [00:07<00:03,  5.81it/s][A
+
+ 68%|██████▊   | 43/63 [00:07<00:03,  5.81it/s][A
+
+ 70%|██████▉   | 44/63 [00:07<00:03,  5.81it/s][A
+
+ 71%|███████▏  | 45/63 [00:07<00:03,  5.80it/s][A
+
+ 73%|███████▎  | 46/63 [00:07<00:02,  5.80it/s][A
+
+ 75%|███████▍  | 47/63 [00:07<00:02,  5.80it/s][A
+
+ 76%|███████▌  | 48/63 [00:08<00:02,  5.80it/s][A
+
+ 78%|███████▊  | 49/63 [00:08<00:02,  5.80it/s][A
+
+ 79%|███████▉  | 50/63 [00:08<00:02,  5.80it/s][A
+
+ 81%|████████  | 51/63 [00:08<00:02,  5.80it/s][A
+
+ 83%|████████▎ | 52/63 [00:08<00:01,  5.81it/s][A
+
+ 84%|████████▍ | 53/63 [00:08<00:01,  5.80it/s][A
+
+ 86%|████████▌ | 54/63 [00:09<00:01,  5.81it/s][A
+
+ 87%|████████▋ | 55/63 [00:09<00:01,  5.81it/s][A
+
+ 89%|████████▉ | 56/63 [00:09<00:01,  5.80it/s][A
+
+ 90%|█████████ | 57/63 [00:09<00:01,  5.80it/s][A
+
+ 92%|█████████▏| 58/63 [00:09<00:00,  5.80it/s][A
+
+ 94%|█████████▎| 59/63 [00:09<00:00,  5.81it/s][A
+
+ 95%|█████████▌| 60/63 [00:10<00:00,  5.80it/s][A
+
+ 97%|█████████▋| 61/63 [00:10<00:00,  5.80it/s][A
+
+ 98%|█████████▊| 62/63 [00:10<00:00,  5.80it/s][A
+
+100%|██████████| 63/63 [00:10<00:00,  5.80it/s][A
+                                                 
+
+                                               
+[A{'eval_loss': 2.984375, 'eval_runtime': 10.7765, 'eval_samples_per_second': 46.397, 'eval_steps_per_second': 5.846, 'epoch': 0.8}
+
+ 80%|████████  | 400/500 [31:52<07:38,  4.59s/it]
+
+100%|██████████| 63/63 [00:10<00:00,  5.80it/s][A
+
+                                               [A
+**********
+Sample 1 at step 400:
+'Á hvaða ári var Ísland stofnað sem lýðveldi? Það eru þessar tölur sem eru aðeins aðeins aðeins aðeins aðeins aðeins aðeins aðeins aðeins'
+
+**********
+Sample 2 at step 400:
+'Hver eru helstu einkenni norðurljósa? Það eru þessar einkenni sem eru í eigu Norðurljósa. Það eru þessar einkenni sem eru í eigu Norðurljósa. Það er'
+
+**********
+Cloze test 1:
+Prompt text: 'Ísland er fallegasta land í heimi, því það er fullt af <mask>'
+Predicted output -> 'Í, en það'
+
+**********
+Cloze test 2:
+Prompt text: 'Maturinn var svo góður, en ég gat ekki borðað meira vegna <mask>'
+Predicted output -> 'M'
+
+**********
+Cloze test 3:
+Prompt text: 'Ísland varð lýðveldi árið <mask>'
+Predicted output -> 'Í, " ", "'
+
+ 80%|████████  | 401/500 [31:59<14:07,  8.56s/it]
+ 80%|████████  | 402/500 [32:04<11:58,  7.33s/it]
+ 81%|████████  | 403/500 [32:08<10:28,  6.48s/it]
+ 81%|████████  | 404/500 [32:12<09:23,  5.87s/it]
+ 81%|████████  | 405/500 [32:17<08:39,  5.46s/it]
+ 81%|████████  | 406/500 [32:22<08:07,  5.18s/it]
+ 81%|████████▏ | 407/500 [32:26<07:43,  4.98s/it]
+ 82%|████████▏ | 408/500 [32:31<07:39,  4.99s/it]
+ 82%|████████▏ | 409/500 [32:36<07:21,  4.85s/it]
+ 82%|████████▏ | 410/500 [32:40<07:10,  4.79s/it]
+**********
+Sample 1 at step 410:
+'Á hvaða ári var Ísland stofnað sem lýðveldi? Það eru þessar tölur sem ég hef fengið í dag. Það eru þessar tölur sem ég hef fengið í dag. Það eru þessar'
+
+**********
+Sample 2 at step 410:
+'Hver eru helstu einkenni norðurljósa? Það eru allir að fara að fara að fara að fara að fara að fara að fara að fara að fara að fara að fara að fara að fara að fara a'
+
+**********
+Cloze test 1:
+Prompt text: 'Ísland er fallegasta land í heimi, því það er fullt af <mask>'
+Predicted output -> 'Í, en það'
+
+**********
+Cloze test 2:
+Prompt text: 'Maturinn var svo góður, en ég gat ekki borðað meira vegna <mask>'
+Predicted output -> 'M'
+
+**********
+Cloze test 3:
+Prompt text: 'Ísland varð lýðveldi árið <mask>'
+Predicted output -> 'Í, en það'
+
+ 82%|████████▏ | 411/500 [32:47<08:11,  5.52s/it]
+ 82%|████████▏ | 412/500 [32:52<07:40,  5.23s/it]
+ 83%|████████▎ | 413/500 [32:57<07:17,  5.03s/it]
+ 83%|████████▎ | 414/500 [33:01<07:06,  4.96s/it]
+ 83%|████████▎ | 415/500 [33:06<06:50,  4.83s/it]
+ 83%|████████▎ | 416/500 [33:11<06:42,  4.80s/it]
+ 83%|████████▎ | 417/500 [33:15<06:31,  4.71s/it]
+ 84%|████████▎ | 418/500 [33:20<06:26,  4.71s/it]
+ 84%|████████▍ | 419/500 [33:24<06:18,  4.67s/it]
+ 84%|████████▍ | 420/500 [33:29<06:12,  4.66s/it]
+**********
+Sample 1 at step 420:
+'Á hvaða ári var Ísland stofnað sem lýðveldi? Það var í fyrra og það var í fyrra. Það var í fyrra og það var í fyrra. Það var í fyrra og það var í'
+
+**********
+Sample 2 at step 420:
+'Hver eru helstu einkenni norðurljósa? Það er ekki hægt að segja að það sé ekki hægt að segja að það sé ekki hægt að segja að það sé ek'
+
+**********
+Cloze test 1:
+Prompt text: 'Ísland er fallegasta land í heimi, því það er fullt af <mask>'
+Predicted output -> 'Í. Það er'
+
+**********
+Cloze test 2:
+Prompt text: 'Maturinn var svo góður, en ég gat ekki borðað meira vegna <mask>'
+Predicted output -> 'M'
+
+**********
+Cloze test 3:
+Prompt text: 'Ísland varð lýðveldi árið <mask>'
+Predicted output -> 'Í. Það er'
+
+ 84%|████████▍ | 421/500 [33:36<07:08,  5.43s/it]
+ 84%|████████▍ | 422/500 [33:41<06:46,  5.22s/it]
+ 85%|████████▍ | 423/500 [33:45<06:25,  5.01s/it]
+ 85%|████████▍ | 424/500 [33:50<06:13,  4.92s/it]
+ 85%|████████▌ | 425/500 [33:55<06:01,  4.82s/it]
+ 85%|████████▌ | 426/500 [33:59<05:51,  4.75s/it]
+ 85%|████████▌ | 427/500 [34:04<05:44,  4.73s/it]
+ 86%|████████▌ | 428/500 [34:09<05:37,  4.68s/it]
+ 86%|████████▌ | 429/500 [34:13<05:27,  4.61s/it]
+ 86%|████████▌ | 430/500 [34:18<05:20,  4.58s/it]
+**********
+Sample 1 at step 430:
+'Á hvaða ári var Ísland stofnað sem lýðveldi? Það var í fyrsta skiptið sem ég var stofnaður. Það var í fyrsta skiptið sem ég var stofnaður. Það var í fyrsta skiptið sem'
+
+**********
+Sample 2 at step 430:
+'Hver eru helstu einkenni norðurljósa? Það eru allir aðeins aðeins aðeins aðeins aðeins aðeins aðeins aðeins aðeins aðeins aðe'
+
+**********
+Cloze test 1:
+Prompt text: 'Ísland er fallegasta land í heimi, því það er fullt af <mask>'
+Predicted output -> 'Í, þar sem þ'
+
+**********
+Cloze test 2:
+Prompt text: 'Maturinn var svo góður, en ég gat ekki borðað meira vegna <mask>'
+Predicted output -> 'M'
+
+**********
+Cloze test 3:
+Prompt text: 'Ísland varð lýðveldi árið <mask>'
+Predicted output -> 'Í, þar sem þ'
+
+ 86%|████████▌ | 431/500 [34:25<06:08,  5.34s/it]
+ 86%|████████▋ | 432/500 [34:30<05:53,  5.20s/it]
+ 87%|████████▋ | 433/500 [34:34<05:35,  5.01s/it]
+ 87%|████████▋ | 434/500 [34:39<05:22,  4.89s/it]
+ 87%|████████▋ | 435/500 [34:43<05:09,  4.76s/it]
+ 87%|████████▋ | 436/500 [34:48<05:03,  4.74s/it]
+ 87%|████████▋ | 437/500 [34:52<04:54,  4.67s/it]
+ 88%|████████▊ | 438/500 [34:57<04:48,  4.66s/it]
+ 88%|████████▊ | 439/500 [35:02<04:42,  4.63s/it]
+ 88%|████████▊ | 440/500 [35:06<04:34,  4.58s/it]
+**********
+Sample 1 at step 440:
+'Á hvaða ári var Ísland stofnað sem lýðveldi? Það eru það lýðveldismenn sem eru að því að það eru það lýðveldismenn sem eru að því að það er'
+
+**********
+Sample 2 at step 440:
+'Hver eru helstu einkenni norðurljósa? Það eru þeir sem eru að skoða það. Það eru þeir sem eru að skoða það. Það eru þeir sem eru að'
+
+**********
+Cloze test 1:
+Prompt text: 'Ísland er fallegasta land í heimi, því það er fullt af <mask>'
+Predicted output -> 'Í. Það er'
+
+**********
+Cloze test 2:
+Prompt text: 'Maturinn var svo góður, en ég gat ekki borðað meira vegna <mask>'
+Predicted output -> 'Mkenningar'
+
+**********
+Cloze test 3:
+Prompt text: 'Ísland varð lýðveldi árið <mask>'
+Predicted output -> 'Í. Það er'
+
+ 88%|████████▊ | 441/500 [35:13<05:14,  5.33s/it]
+ 88%|████████▊ | 442/500 [35:18<04:57,  5.13s/it]
+ 89%|████████▊ | 443/500 [35:22<04:42,  4.96s/it]
+ 89%|████████▉ | 444/500 [35:27<04:33,  4.88s/it]
+ 89%|████████▉ | 445/500 [35:32<04:23,  4.78s/it]
+ 89%|████████▉ | 446/500 [35:36<04:13,  4.69s/it]
+ 89%|████████▉ | 447/500 [35:41<04:07,  4.67s/it]
+ 90%|████████▉ | 448/500 [35:45<04:00,  4.62s/it]
+ 90%|████████▉ | 449/500 [35:50<03:55,  4.63s/it]
+ 90%|█████████ | 450/500 [35:54<03:50,  4.61s/it]
+**********
+Sample 1 at step 450:
+'Á hvaða ári var Ísland stofnað sem lýðveldi? Það eru þau aðstæður sem ég hefði aðeins látið gera í þessu máli. Það eru þau aðstæður sem ég hefði að'
+
+**********
+Sample 2 at step 450:
+'Hver eru helstu einkenni norðurljósa? Það eru margir sem eru að tala um að það séu þeir að tala um að það séu þeir að tala um að það séu þeir a'
+
+**********
+Cloze test 1:
+Prompt text: 'Ísland er fallegasta land í heimi, því það er fullt af <mask>'
+Predicted output -> 'Í. Það er'
+
+**********
+Cloze test 2:
+Prompt text: 'Maturinn var svo góður, en ég gat ekki borðað meira vegna <mask>'
+Predicted output -> 'M. Það er'
+
+**********
+Cloze test 3:
+Prompt text: 'Ísland varð lýðveldi árið <mask>'
+Predicted output -> 'Í. Það er'
+
+ 90%|█████████ | 451/500 [36:02<04:31,  5.54s/it]
+ 90%|█████████ | 452/500 [36:07<04:10,  5.23s/it]
+ 91%|█████████ | 453/500 [36:11<03:55,  5.01s/it]
+ 91%|█████████ | 454/500 [36:16<03:43,  4.86s/it]
+ 91%|█████████ | 455/500 [36:20<03:33,  4.75s/it]
+ 91%|█████████ | 456/500 [36:25<03:26,  4.69s/it]
+ 91%|█████████▏| 457/500 [36:29<03:19,  4.65s/it]
+ 92%|█████████▏| 458/500 [36:34<03:21,  4.79s/it]
+ 92%|█████████▏| 459/500 [36:39<03:13,  4.71s/it]
+ 92%|█████████▏| 460/500 [36:43<03:06,  4.65s/it]
+**********
+Sample 1 at step 460:
+'Á hvaða ári var Ísland stofnað sem lýðveldi? Það var í fyrra ári. Það var í fyrra ári sem við höfum verið að taka þátt í því að við höfum verið að'
+
+**********
+Sample 2 at step 460:
+'Hver eru helstu einkenni norðurljósa? Það eru þeir sem eru með einhverju eða neinu eða neinu eða neinu eða neinu eða neinu eða neinu eða neinu eða neinu eða'
+
+**********
+Cloze test 1:
+Prompt text: 'Ísland er fallegasta land í heimi, því það er fullt af <mask>'
+Predicted output -> 'Í. Þetta eru'
+
+**********
+Cloze test 2:
+Prompt text: 'Maturinn var svo góður, en ég gat ekki borðað meira vegna <mask>'
+Predicted output -> 'M. Þetta'
+
+**********
+Cloze test 3:
+Prompt text: 'Ísland varð lýðveldi árið <mask>'
+Predicted output -> 'Í, en það'
+
+ 92%|█████████▏| 461/500 [36:51<03:32,  5.44s/it]
+ 92%|█████████▏| 462/500 [36:55<03:16,  5.17s/it]
+ 93%|█████████▎| 463/500 [37:00<03:04,  4.98s/it]
+ 93%|█████████▎| 464/500 [37:04<02:55,  4.87s/it]
+ 93%|█████████▎| 465/500 [37:09<02:47,  4.78s/it]
+ 93%|█████████▎| 466/500 [37:13<02:39,  4.70s/it]
+ 93%|█████████▎| 467/500 [37:18<02:34,  4.67s/it]
+ 94%|█████████▎| 468/500 [37:23<02:28,  4.64s/it]
+ 94%|█████████▍| 469/500 [37:27<02:22,  4.61s/it]
+ 94%|█████████▍| 470/500 [37:32<02:19,  4.66s/it]
+**********
+Sample 1 at step 470:
+'Á hvaða ári var Ísland stofnað sem lýðveldi? Það eru margir sem hafa það áhuga að gera þetta. Það eru margir sem hafa það áhuga að gera þetta. Það eru marg'
+
+**********
+Sample 2 at step 470:
+'Hver eru helstu einkenni norðurljósa? Það eru margir sem hafa það áhuga að gera þetta. Það eru margir sem hafa það áhuga að gera þetta. Það eru marg'
+
+**********
+Cloze test 1:
+Prompt text: 'Ísland er fallegasta land í heimi, því það er fullt af <mask>'
+Predicted output -> 'Í, sem eru þ'
+
+**********
+Cloze test 2:
+Prompt text: 'Maturinn var svo góður, en ég gat ekki borðað meira vegna <mask>'
+Predicted output -> 'M. Það er'
+
+**********
+Cloze test 3:
+Prompt text: 'Ísland varð lýðveldi árið <mask>'
+Predicted output -> 'Í. Það er'
+
+ 94%|█████████▍| 471/500 [37:39<02:36,  5.40s/it]
+ 94%|█████████▍| 472/500 [37:44<02:23,  5.13s/it]
+ 95%|█████████▍| 473/500 [37:48<02:13,  4.95s/it]
+ 95%|█████████▍| 474/500 [37:53<02:05,  4.83s/it]
+ 95%|█████████▌| 475/500 [37:57<01:58,  4.75s/it]
+ 95%|█████████▌| 476/500 [38:02<01:56,  4.86s/it]
+ 95%|█████████▌| 477/500 [38:07<01:49,  4.76s/it]
+ 96%|█████████▌| 478/500 [38:11<01:43,  4.70s/it]
+ 96%|█████████▌| 479/500 [38:16<01:37,  4.65s/it]
+ 96%|█████████▌| 480/500 [38:21<01:32,  4.63s/it]
+**********
+Sample 1 at step 480:
+'Á hvaða ári var Ísland stofnað sem lýðveldi? Það eru því ekki allir aðrir aðrir aðrir aðrir aðrir aðrir aðrir aðrir aðrir aðrir aðrir aðrir aðrir'
+
+**********
+Sample 2 at step 480:
+'Hver eru helstu einkenni norðurljósa? Það eru þeir sem eru með þetta í huga. Það eru þeir sem eru með þetta í huga. Það eru þeir sem eru með þetta'
+
+**********
+Cloze test 1:
+Prompt text: 'Ísland er fallegasta land í heimi, því það er fullt af <mask>'
+Predicted output -> 'Í. Það er'
+
+**********
+Cloze test 2:
+Prompt text: 'Maturinn var svo góður, en ég gat ekki borðað meira vegna <mask>'
+Predicted output -> 'M. Það er'
+
+**********
+Cloze test 3:
+Prompt text: 'Ísland varð lýðveldi árið <mask>'
+Predicted output -> 'Í. Það er'
+
+ 96%|█████████▌| 481/500 [38:28<01:42,  5.41s/it]
+ 96%|█████████▋| 482/500 [38:33<01:35,  5.29s/it]
+ 97%|█████████▋| 483/500 [38:37<01:26,  5.07s/it]
+ 97%|█████████▋| 484/500 [38:42<01:18,  4.90s/it]
+ 97%|█████████▋| 485/500 [38:46<01:11,  4.78s/it]
+ 97%|█████████▋| 486/500 [38:51<01:05,  4.71s/it]
+ 97%|█████████▋| 487/500 [38:55<01:00,  4.67s/it]
+ 98%|█████████▊| 488/500 [39:00<00:55,  4.64s/it]
+ 98%|█████████▊| 489/500 [39:05<00:52,  4.76s/it]
+ 98%|█████████▊| 490/500 [39:10<00:46,  4.68s/it]
+**********
+Sample 1 at step 490:
+'Á hvaða ári var Ísland stofnað sem lýðveldi? Það eru margir sem eru að tala um það. Það eru margir sem eru að tala um það. Það eru margir sem eru að tala um'
+
+**********
+Sample 2 at step 490:
+'Hver eru helstu einkenni norðurljósa? Það eru margar einkenni sem eru í þessum efnum. Það eru margar einkenni sem eru í þessum efnum. Það eru margar einkenni'
+
+**********
+Cloze test 1:
+Prompt text: 'Ísland er fallegasta land í heimi, því það er fullt af <mask>'
+Predicted output -> 'Í. Það er'
+
+**********
+Cloze test 2:
+Prompt text: 'Maturinn var svo góður, en ég gat ekki borðað meira vegna <mask>'
+Predicted output -> 'M. Þetta eru'
+
+**********
+Cloze test 3:
+Prompt text: 'Ísland varð lýðveldi árið <mask>'
+Predicted output -> 'Í. Þetta eru'
+
+ 98%|█████████▊| 491/500 [39:17<00:48,  5.43s/it]
+ 98%|█████████▊| 492/500 [39:21<00:41,  5.20s/it]
+ 99%|█████████▊| 493/500 [39:26<00:35,  5.00s/it]
+ 99%|█████████▉| 494/500 [39:30<00:29,  4.87s/it]
+ 99%|█████████▉| 495/500 [39:35<00:24,  4.82s/it]
+ 99%|█████████▉| 496/500 [39:40<00:18,  4.73s/it]
+ 99%|█████████▉| 497/500 [39:44<00:13,  4.66s/it]
+100%|█████████▉| 498/500 [39:49<00:09,  4.62s/it]
+100%|█████████▉| 499/500 [39:53<00:04,  4.60s/it]
+100%|██████████| 500/500 [39:58<00:00,  4.59s/it]
+                                                 
+{'loss': 3.1542, 'learning_rate': 5e-05, 'epoch': 1.0}
+
+100%|██████████| 500/500 [39:58<00:00,  4.59s/it][INFO|trainer.py:3138] 2023-05-09 23:44:09,226 >> ***** Running Evaluation *****
+[INFO|trainer.py:3140] 2023-05-09 23:44:09,226 >>   Num examples = 500
+[INFO|trainer.py:3143] 2023-05-09 23:44:09,226 >>   Batch size = 8
+
+
+  0%|          | 0/63 [00:00<?, ?it/s][A
+
+  3%|▎         | 2/63 [00:00<00:05, 11.61it/s][A
+
+  6%|▋         | 4/63 [00:00<00:08,  7.32it/s][A
+
+  8%|▊         | 5/63 [00:00<00:08,  6.79it/s][A
+
+ 10%|▉         | 6/63 [00:00<00:08,  6.47it/s][A
+
+ 11%|█         | 7/63 [00:01<00:08,  6.26it/s][A
+
+ 13%|█▎        | 8/63 [00:01<00:08,  6.12it/s][A
+
+ 14%|█▍        | 9/63 [00:01<00:08,  6.02it/s][A
+
+ 16%|█▌        | 10/63 [00:01<00:08,  5.95it/s][A
+
+ 17%|█▋        | 11/63 [00:01<00:08,  5.91it/s][A
+
+ 19%|█▉        | 12/63 [00:01<00:08,  5.88it/s][A
+
+ 21%|██        | 13/63 [00:02<00:08,  5.85it/s][A
+
+ 22%|██▏       | 14/63 [00:02<00:08,  5.84it/s][A
+
+ 24%|██▍       | 15/63 [00:02<00:08,  5.83it/s][A
+
+ 25%|██▌       | 16/63 [00:02<00:08,  5.82it/s][A
+
+ 27%|██▋       | 17/63 [00:02<00:07,  5.82it/s][A
+
+ 29%|██▊       | 18/63 [00:02<00:07,  5.81it/s][A
+
+ 30%|███       | 19/63 [00:03<00:07,  5.81it/s][A
+
+ 32%|███▏      | 20/63 [00:03<00:07,  5.81it/s][A
+
+ 33%|███▎      | 21/63 [00:03<00:07,  5.82it/s][A
+
+ 35%|███▍      | 22/63 [00:03<00:07,  5.82it/s][A
+
+ 37%|███▋      | 23/63 [00:03<00:06,  5.81it/s][A
+
+ 38%|███▊      | 24/63 [00:03<00:06,  5.81it/s][A
+
+ 40%|███▉      | 25/63 [00:04<00:06,  5.81it/s][A
+
+ 41%|████▏     | 26/63 [00:04<00:06,  5.82it/s][A
+
+ 43%|████▎     | 27/63 [00:04<00:06,  5.82it/s][A
+
+ 44%|████▍     | 28/63 [00:04<00:06,  5.82it/s][A
+
+ 46%|████▌     | 29/63 [00:04<00:05,  5.82it/s][A
+
+ 48%|████▊     | 30/63 [00:04<00:05,  5.81it/s][A
+
+ 49%|████▉     | 31/63 [00:05<00:05,  5.81it/s][A
+
+ 51%|█████     | 32/63 [00:05<00:05,  5.81it/s][A
+
+ 52%|█████▏    | 33/63 [00:05<00:05,  5.81it/s][A
+
+ 54%|█████▍    | 34/63 [00:05<00:04,  5.80it/s][A
+
+ 56%|█████▌    | 35/63 [00:05<00:04,  5.80it/s][A
+
+ 57%|█████▋    | 36/63 [00:06<00:04,  5.80it/s][A
+
+ 59%|█████▊    | 37/63 [00:06<00:04,  5.80it/s][A
+
+ 60%|██████    | 38/63 [00:06<00:04,  5.80it/s][A
+
+ 62%|██████▏   | 39/63 [00:06<00:04,  5.80it/s][A
+
+ 63%|██████▎   | 40/63 [00:06<00:03,  5.80it/s][A
+
+ 65%|██████▌   | 41/63 [00:06<00:03,  5.81it/s][A
+
+ 67%|██████▋   | 42/63 [00:07<00:03,  5.81it/s][A
+
+ 68%|██████▊   | 43/63 [00:07<00:03,  5.82it/s][A
+
+ 70%|██████▉   | 44/63 [00:07<00:03,  5.82it/s][A
+
+ 71%|███████▏  | 45/63 [00:07<00:03,  5.82it/s][A
+
+ 73%|███████▎  | 46/63 [00:07<00:02,  5.82it/s][A
+
+ 75%|███████▍  | 47/63 [00:07<00:02,  5.82it/s][A
+
+ 76%|███████▌  | 48/63 [00:08<00:02,  5.82it/s][A
+
+ 78%|███████▊  | 49/63 [00:08<00:02,  5.82it/s][A
+
+ 79%|███████▉  | 50/63 [00:08<00:02,  5.82it/s][A
+
+ 81%|████████  | 51/63 [00:08<00:02,  5.82it/s][A
+
+ 83%|████████▎ | 52/63 [00:08<00:01,  5.82it/s][A
+
+ 84%|████████▍ | 53/63 [00:08<00:01,  5.82it/s][A
+
+ 86%|████████▌ | 54/63 [00:09<00:01,  5.82it/s][A
+
+ 87%|████████▋ | 55/63 [00:09<00:01,  5.80it/s][A
+
+ 89%|████████▉ | 56/63 [00:09<00:01,  5.81it/s][A
+
+ 90%|█████████ | 57/63 [00:09<00:01,  5.80it/s][A
+
+ 92%|█████████▏| 58/63 [00:09<00:00,  5.81it/s][A
+
+ 94%|█████████▎| 59/63 [00:09<00:00,  5.81it/s][A
+
+ 95%|█████████▌| 60/63 [00:10<00:00,  5.81it/s][A
+
+ 97%|█████████▋| 61/63 [00:10<00:00,  5.81it/s][A
+
+ 98%|█████████▊| 62/63 [00:10<00:00,  5.81it/s][A
+
+100%|██████████| 63/63 [00:10<00:00,  5.81it/s][A
+                                                 
+
+                                               
+[A{'eval_loss': 2.904296875, 'eval_runtime': 10.7673, 'eval_samples_per_second': 46.437, 'eval_steps_per_second': 5.851, 'epoch': 1.0}
+
+100%|██████████| 500/500 [40:09<00:00,  4.59s/it]
+
+100%|██████████| 63/63 [00:10<00:00,  5.81it/s][A
+
+                                               [A[INFO|trainer.py:2877] 2023-05-09 23:44:19,996 >> Saving model checkpoint to b560ftrmh1e/checkpoint-500
+[INFO|configuration_utils.py:458] 2023-05-09 23:44:20,000 >> Configuration saved in b560ftrmh1e/checkpoint-500/config.json
+[INFO|configuration_utils.py:364] 2023-05-09 23:44:20,003 >> Configuration saved in b560ftrmh1e/checkpoint-500/generation_config.json
+[INFO|modeling_utils.py:1855] 2023-05-09 23:44:33,646 >> Model weights saved in b560ftrmh1e/checkpoint-500/pytorch_model.bin
+[INFO|tokenization_utils_base.py:2181] 2023-05-09 23:44:33,649 >> tokenizer config file saved in b560ftrmh1e/checkpoint-500/tokenizer_config.json
+[INFO|tokenization_utils_base.py:2188] 2023-05-09 23:44:33,651 >> Special tokens file saved in b560ftrmh1e/checkpoint-500/special_tokens_map.json
+[2023-05-09 23:44:33,972] [INFO] [logging.py:96:log_dist] [Rank 0] [Torch] Checkpoint global_step500 is about to be saved!
+/home/stefanola/anaconda3/envs/huggingface/lib/python3.8/site-packages/torch/nn/modules/module.py:1802: UserWarning: Positional args are being deprecated, use kwargs instead. Refer to https://pytorch.org/docs/master/generated/torch.nn.Module.html#torch.nn.Module.state_dict for details.
+  warnings.warn(
+[2023-05-09 23:44:33,983] [INFO] [logging.py:96:log_dist] [Rank 0] Saving model checkpoint: b560ftrmh1e/checkpoint-500/global_step500/mp_rank_00_model_states.pt
+[2023-05-09 23:44:33,983] [INFO] [torch_checkpoint_engine.py:21:save] [Torch] Saving b560ftrmh1e/checkpoint-500/global_step500/mp_rank_00_model_states.pt...
+[2023-05-09 23:44:46,668] [INFO] [torch_checkpoint_engine.py:23:save] [Torch] Saved b560ftrmh1e/checkpoint-500/global_step500/mp_rank_00_model_states.pt.
+[2023-05-09 23:44:46,670] [INFO] [torch_checkpoint_engine.py:21:save] [Torch] Saving b560ftrmh1e/checkpoint-500/global_step500/zero_pp_rank_0_mp_rank_00_optim_states.pt...
+[2023-05-09 23:45:47,260] [INFO] [torch_checkpoint_engine.py:23:save] [Torch] Saved b560ftrmh1e/checkpoint-500/global_step500/zero_pp_rank_0_mp_rank_00_optim_states.pt.
+[2023-05-09 23:45:47,267] [INFO] [engine.py:3144:_save_zero_checkpoint] zero checkpoint saved b560ftrmh1e/checkpoint-500/global_step500/zero_pp_rank_0_mp_rank_00_optim_states.pt
+[2023-05-09 23:45:47,267] [INFO] [torch_checkpoint_engine.py:33:commit] [Torch] Checkpoint global_step500 is ready now!
+[INFO|trainer.py:2044] 2023-05-09 23:45:47,279 >> 
+
+Training completed. Do not forget to share your model on huggingface.co/models =)
+
+
+
+                                                 
+{'train_runtime': 2496.4025, 'train_samples_per_second': 4.807, 'train_steps_per_second': 0.2, 'train_loss': 3.154236328125, 'epoch': 1.0}
+
+100%|██████████| 500/500 [41:36<00:00,  4.59s/it]
+100%|██████████| 500/500 [41:36<00:00,  4.99s/it]
+[INFO|trainer.py:2877] 2023-05-09 23:45:47,281 >> Saving model checkpoint to b560ftrmh1e
+[INFO|configuration_utils.py:458] 2023-05-09 23:45:47,284 >> Configuration saved in b560ftrmh1e/config.json
+[INFO|configuration_utils.py:364] 2023-05-09 23:45:47,287 >> Configuration saved in b560ftrmh1e/generation_config.json
+[INFO|modeling_utils.py:1855] 2023-05-09 23:46:00,153 >> Model weights saved in b560ftrmh1e/pytorch_model.bin
+[INFO|tokenization_utils_base.py:2181] 2023-05-09 23:46:00,156 >> tokenizer config file saved in b560ftrmh1e/tokenizer_config.json
+[INFO|tokenization_utils_base.py:2188] 2023-05-09 23:46:00,159 >> Special tokens file saved in b560ftrmh1e/special_tokens_map.json
+***** train metrics *****
+  epoch                    =        1.0
+  train_loss               =     3.1542
+  train_runtime            = 0:41:36.40
+  train_samples            =      12000
+  train_samples_per_second =      4.807
+  train_steps_per_second   =        0.2
+05/09/2023 23:46:00 - INFO - __main__ -   *** Evaluate ***
+[INFO|trainer.py:3138] 2023-05-09 23:46:00,495 >> ***** Running Evaluation *****
+[INFO|trainer.py:3140] 2023-05-09 23:46:00,495 >>   Num examples = 500
+[INFO|trainer.py:3143] 2023-05-09 23:46:00,495 >>   Batch size = 8
+
+  0%|          | 0/63 [00:00<?, ?it/s]
+  3%|▎         | 2/63 [00:00<00:05, 11.67it/s]
+  6%|▋         | 4/63 [00:00<00:08,  7.32it/s]
+  8%|▊         | 5/63 [00:00<00:08,  6.80it/s]
+ 10%|▉         | 6/63 [00:00<00:08,  6.47it/s]
+ 11%|█         | 7/63 [00:01<00:08,  6.26it/s]
+ 13%|█▎        | 8/63 [00:01<00:08,  6.11it/s]
+ 14%|█▍        | 9/63 [00:01<00:08,  6.02it/s]
+ 16%|█▌        | 10/63 [00:01<00:08,  5.96it/s]
+ 17%|█▋        | 11/63 [00:01<00:08,  5.92it/s]
+ 19%|█▉        | 12/63 [00:01<00:08,  5.89it/s]
+ 21%|██        | 13/63 [00:02<00:08,  5.87it/s]
+ 22%|██▏       | 14/63 [00:02<00:08,  5.86it/s]
+ 24%|██▍       | 15/63 [00:02<00:08,  5.84it/s]
+ 25%|██▌       | 16/63 [00:02<00:08,  5.84it/s]
+ 27%|██▋       | 17/63 [00:02<00:07,  5.83it/s]
+ 29%|██▊       | 18/63 [00:02<00:07,  5.83it/s]
+ 30%|███       | 19/63 [00:03<00:07,  5.82it/s]
+ 32%|███▏      | 20/63 [00:03<00:07,  5.83it/s]
+ 33%|███▎      | 21/63 [00:03<00:07,  5.82it/s]
+ 35%|███▍      | 22/63 [00:03<00:07,  5.82it/s]
+ 37%|███▋      | 23/63 [00:03<00:06,  5.83it/s]
+ 38%|███▊      | 24/63 [00:03<00:06,  5.83it/s]
+ 40%|███▉      | 25/63 [00:04<00:06,  5.83it/s]
+ 41%|████▏     | 26/63 [00:04<00:06,  5.83it/s]
+ 43%|████▎     | 27/63 [00:04<00:06,  5.83it/s]
+ 44%|████▍     | 28/63 [00:04<00:06,  5.83it/s]
+ 46%|████▌     | 29/63 [00:04<00:05,  5.82it/s]
+ 48%|████▊     | 30/63 [00:04<00:05,  5.83it/s]
+ 49%|████▉     | 31/63 [00:05<00:05,  5.82it/s]
+ 51%|█████     | 32/63 [00:05<00:05,  5.82it/s]
+ 52%|█████▏    | 33/63 [00:05<00:05,  5.83it/s]
+ 54%|█████▍    | 34/63 [00:05<00:04,  5.82it/s]
+ 56%|█████▌    | 35/63 [00:05<00:04,  5.82it/s]
+ 57%|█████▋    | 36/63 [00:06<00:04,  5.82it/s]
+ 59%|█████▊    | 37/63 [00:06<00:04,  5.82it/s]
+ 60%|██████    | 38/63 [00:06<00:04,  5.82it/s]
+ 62%|██████▏   | 39/63 [00:06<00:04,  5.82it/s]
+ 63%|██████▎   | 40/63 [00:06<00:03,  5.82it/s]
+ 65%|██████▌   | 41/63 [00:06<00:03,  5.82it/s]
+ 67%|██████▋   | 42/63 [00:07<00:03,  5.82it/s]
+ 68%|██████▊   | 43/63 [00:07<00:03,  5.82it/s]
+ 70%|██████▉   | 44/63 [00:07<00:03,  5.82it/s]
+ 71%|███████▏  | 45/63 [00:07<00:03,  5.82it/s]
+ 73%|███████▎  | 46/63 [00:07<00:02,  5.82it/s]
+ 75%|███████▍  | 47/63 [00:07<00:02,  5.83it/s]
+ 76%|███████▌  | 48/63 [00:08<00:02,  5.83it/s]
+ 78%|███████▊  | 49/63 [00:08<00:02,  5.82it/s]
+ 79%|███████▉  | 50/63 [00:08<00:02,  5.81it/s]
+ 81%|████████  | 51/63 [00:08<00:02,  5.81it/s]
+ 83%|████████▎ | 52/63 [00:08<00:01,  5.81it/s]
+ 84%|████████▍ | 53/63 [00:08<00:01,  5.81it/s]
+ 86%|████████▌ | 54/63 [00:09<00:01,  5.81it/s]
+ 87%|████████▋ | 55/63 [00:09<00:01,  5.80it/s]
+ 89%|████████▉ | 56/63 [00:09<00:01,  5.80it/s]
+ 90%|█████████ | 57/63 [00:09<00:01,  5.80it/s]
+ 92%|█████████▏| 58/63 [00:09<00:00,  5.80it/s]
+ 94%|█████████▎| 59/63 [00:09<00:00,  5.80it/s]
+ 95%|█████████▌| 60/63 [00:10<00:00,  5.80it/s]
+ 97%|█████████▋| 61/63 [00:10<00:00,  5.80it/s]
+ 98%|█████████▊| 62/63 [00:10<00:00,  5.81it/s]
+100%|██████████| 63/63 [00:10<00:00,  5.81it/s]
+100%|██████████| 63/63 [00:10<00:00,  5.87it/s]
+***** eval metrics *****
+  epoch                   =        1.0
+  eval_loss               =     2.9043
+  eval_runtime            = 0:00:10.75
+  eval_samples            =        500
+  eval_samples_per_second =     46.481
+  eval_steps_per_second   =      5.857
+  perplexity              =    18.2524
+[2023-05-09 23:46:13,509] [INFO] [launch.py:460:main] Process 1766424 exits successfully.

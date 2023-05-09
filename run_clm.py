@@ -28,9 +28,6 @@ from transformers.trainer_utils import get_last_checkpoint, is_main_process
 from transformers.utils import check_min_version
 
 
-logging.getLogger("transformers").setLevel(logging.WARNING)
-
-
 def generate_cloze_sample(prompt, model, tokenizer, max_new_tokens=5):
     # Tokenize the input prompt
     input_tokens = tokenizer.encode(
@@ -45,8 +42,6 @@ def generate_cloze_sample(prompt, model, tokenizer, max_new_tokens=5):
 
     # Print the text with the mask token
     masked_text = tokenizer.decode(input_tokens[0], skip_special_tokens=False)
-    print("Prompt text: ", prompt)
-    # print(f"Answer: ", {masked_text})
 
     # Pass the modified input to the model for generation
     max_length = len(input_tokens[0]) + max_new_tokens
@@ -55,7 +50,10 @@ def generate_cloze_sample(prompt, model, tokenizer, max_new_tokens=5):
 
     # Print the sentence with the predicted token by the model
     decoded_output = tokenizer.decode(output[0], skip_special_tokens=True)
-    print(f"Predicted sentence: '{decoded_output}'")
+    print(
+        f"Prompt text: '{prompt}'\nPredicted output -> '{decoded_output}'")
+
+    # print(f"Predicted words: '{decoded_output}'")
 
     return decoded_output
 
@@ -66,7 +64,7 @@ def generate_sample(prompt, model, tokenizer, max_new_tokens=50):
     output = model.generate(
         input_ids, max_length=max_length, num_return_sequences=1)
     decoded_output = tokenizer.decode(output[0], skip_special_tokens=True)
-    return decoded_output
+    return f"'{decoded_output}'"
 
 
 class SampleGenerationCallback(TrainerCallback):
@@ -74,19 +72,35 @@ class SampleGenerationCallback(TrainerCallback):
         self.prompts = prompts
         self.cloze_prompts = cloze_prompts
         self.tokenizer = tokenizer
-
         self.model = model
         self.interval = interval
 
     def on_step_begin(self, args, state, control, **kwargs):
         if state.global_step % self.interval == 0 and state.global_step > 0:
+            # Turn off the logger temporarily
+            # logger = logging.getLogger('transformers')
+            # logger.set_verbosity_critical()
+            transformers.utils.logging.set_verbosity_error()
+
+            training_loss = None
+            for log in reversed(state.log_history):
+                if 'loss' in log:
+                    training_loss = log['loss']
+                    break
+            if training_loss is not None:
+                print(
+                    f"\n**********\nTraining loss at step {state.global_step}: {training_loss}\n**********\n")
+
             for i, prompt in enumerate(self.prompts):
-                print(f"Sample {i+1} at step {state.global_step}:")
+                print(
+                    f"\n**********\nSample {i+1} at step {state.global_step}:")
                 print(generate_sample(prompt, self.model, self.tokenizer))
             for i, cloze_prompt in enumerate(self.cloze_prompts):
-                print(f"Cloze test {i+1}:")
-                print(generate_cloze_sample(
-                    cloze_prompt, self.model, self.tokenizer))
+                print(f"\n**********\nCloze test {i+1}:")
+                generate_cloze_sample(cloze_prompt, self.model, self.tokenizer)
+
+            # logger.set_verbosity_info()
+            transformers.utils.logging.set_verbosity_info()
 
 
 prompts = [
@@ -495,7 +509,7 @@ def main():
         # Data collator will default to DataCollatorWithPadding, so we change it.
         data_collator=default_data_collator,
         callbacks=[SampleGenerationCallback(
-            prompts, cloze_prompts, tokenizer, model, interval=50)]  # Add the callback here
+            prompts, cloze_prompts, tokenizer, model, interval=10)]
     )
 
     # Training

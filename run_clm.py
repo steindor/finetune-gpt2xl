@@ -1,24 +1,3 @@
-#!/usr/bin/env python
-# coding=utf-8
-# Copyright 2020 The HuggingFace Inc. team. All rights reserved.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-"""
-Fine-tuning the library models for causal language modeling (GPT, GPT-2, CTRL, ...) on a text file or a dataset.
-Here is the full list of checkpoints on the hub that can be fine-tuned by this script:
-https://huggingface.co/models?filter=causal-lm
-"""
-# You can also adapt this script on your own causal language modeling task. Pointers for this are left as comments.
 
 import logging
 import math
@@ -28,6 +7,7 @@ from dataclasses import dataclass, field
 from typing import Optional
 from pathlib import Path
 
+import datasets
 from datasets import load_dataset, Dataset
 
 import transformers
@@ -39,12 +19,86 @@ from transformers import (
     AutoTokenizer,
     HfArgumentParser,
     Trainer,
+    TrainerCallback,
     TrainingArguments,
     default_data_collator,
     set_seed,
 )
 from transformers.trainer_utils import get_last_checkpoint, is_main_process
 from transformers.utils import check_min_version
+
+
+logging.basicConfig(level=logging.WARNING)
+
+
+def generate_cloze_sample(prompt, model, tokenizer, max_new_tokens=5):
+    # Tokenize the input prompt
+    input_tokens = tokenizer.encode(
+        prompt, return_tensors='pt').to(model.device)
+
+    # Replace the last word's tokens with the mask token
+    last_word_start = len(input_tokens[0]) - 1
+    while input_tokens[0, last_word_start] != tokenizer.sep_token_id and last_word_start > 0:
+        last_word_start -= 1
+    last_word_start += 1
+    input_tokens[0, last_word_start:] = tokenizer.mask_token_id
+
+    # Print the text with the mask token
+    masked_text = tokenizer.decode(input_tokens[0], skip_special_tokens=False)
+    print("Prompt text: ", prompt)
+    # print(f"Answer: ", {masked_text})
+
+    # Pass the modified input to the model for generation
+    max_length = len(input_tokens[0]) + max_new_tokens
+    output = model.generate(
+        input_tokens, max_length=max_length, num_return_sequences=1)
+
+    # Print the sentence with the predicted token by the model
+    decoded_output = tokenizer.decode(output[0], skip_special_tokens=True)
+    print(f"Predicted sentence: '{decoded_output}'")
+
+    return decoded_output
+
+
+def generate_sample(prompt, model, tokenizer, max_new_tokens=50):
+    input_ids = tokenizer.encode(prompt, return_tensors="pt").to(model.device)
+    max_length = len(input_ids[0]) + max_new_tokens
+    output = model.generate(
+        input_ids, max_length=max_length, num_return_sequences=1)
+    decoded_output = tokenizer.decode(output[0], skip_special_tokens=True)
+    return decoded_output
+
+
+class SampleGenerationCallback(TrainerCallback):
+    def __init__(self, prompts, cloze_prompts, tokenizer, model, interval):
+        self.prompts = prompts
+        self.cloze_prompts = cloze_prompts
+        self.tokenizer = tokenizer
+
+        self.model = model
+        self.interval = interval
+
+    def on_step_begin(self, args, state, control, **kwargs):
+        if state.global_step % self.interval == 0 and state.global_step > 0:
+            for i, prompt in enumerate(self.prompts):
+                print(f"Sample {i+1} at step {state.global_step}:")
+                print(generate_sample(prompt, self.model, self.tokenizer))
+            for i, cloze_prompt in enumerate(self.cloze_prompts):
+                print(f"Cloze test {i+1}:")
+                print(generate_cloze_sample(
+                    cloze_prompt, self.model, self.tokenizer))
+
+
+prompts = [
+    "Á hvaða ári var Ísland stofnað sem lýðveldi?",
+    "Hver eru helstu einkenni norðurljósa?"
+]
+
+cloze_prompts = [
+    "Ísland er fallegasta land í heimi, því það er fullt af <mask>",
+    "Maturinn var svo góður, en ég gat ekki borðað meira vegna <mask>",
+    "Ísland varð lýðveldi árið <mask>",
+]
 
 
 # Will error if the minimal version of Transformers is not installed. Remove at your own risks.
@@ -239,6 +293,7 @@ def main():
     #
     # In distributed training, the load_dataset function guarantee that only one local process can concurrently
     # download the dataset.
+    '''
     if data_args.dataset_name is not None:
         # Downloading and loading a dataset from the hub.
         datasets = load_dataset(data_args.dataset_name,
@@ -278,7 +333,7 @@ def main():
     # Distributed training:
     # The .from_pretrained methods guarantee that only one local process can concurrently
     # download model & vocab.
-
+   '''
     config_kwargs = {
         "cache_dir": model_args.cache_dir,
         "revision": model_args.model_revision,
@@ -320,6 +375,11 @@ def main():
             "You can do it from another script, save it, and load it from here, using --tokenizer_name."
         )
 
+    if tokenizer.mask_token is None:
+        tokenizer.mask_token = "[MASK]"
+        tokenizer.mask_token_id = tokenizer.convert_tokens_to_ids(
+            tokenizer.mask_token)
+
     if model_args.model_name_or_path:
         model = AutoModelForCausalLM.from_pretrained(
             model_args.model_name_or_path,
@@ -335,6 +395,7 @@ def main():
 
     model.resize_token_embeddings(len(tokenizer))
 
+    '''
     # Preprocessing the datasets.
     # First we tokenize all the texts.
     if training_args.do_train:
@@ -400,19 +461,25 @@ def main():
         batched=True,
         num_proc=data_args.preprocessing_num_workers,
         load_from_cache_file=not data_args.overwrite_cache,
-    )
+    )'''
+
+    lm_datasets = datasets.load_dataset('stoddur/rmh_tokenized_512')
 
     if training_args.do_train:
+        '''
         if "train" not in tokenized_datasets:
             raise ValueError("--do_train requires a train dataset")
+        '''
         train_dataset = lm_datasets["train"]
         if data_args.max_train_samples is not None:
             train_dataset = train_dataset.select(
                 range(data_args.max_train_samples))
 
     if training_args.do_eval:
+        '''
         if "validation" not in tokenized_datasets:
             raise ValueError("--do_eval requires a validation dataset")
+        '''
         eval_dataset = lm_datasets["validation"]
         if data_args.max_val_samples is not None:
             eval_dataset = eval_dataset.select(
@@ -427,7 +494,8 @@ def main():
         tokenizer=tokenizer,
         # Data collator will default to DataCollatorWithPadding, so we change it.
         data_collator=default_data_collator,
-
+        callbacks=[SampleGenerationCallback(
+            prompts, cloze_prompts, tokenizer, model, interval=50)]  # Add the callback here
     )
 
     # Training
@@ -448,7 +516,8 @@ def main():
                 train_dataset)
         )
         metrics["train_samples"] = min(max_train_samples, len(train_dataset))
-
+        perplexity = math.exp(metrics["eval_loss"])
+        metrics["perplexity"] = perplexity
         trainer.log_metrics("train", metrics)
         trainer.save_metrics("train", metrics)
         trainer.save_state()

@@ -104,14 +104,36 @@ class SampleGenerationCallback(TrainerCallback):
 
 
 prompts = [
+    "Hvað er klukkan þegar það er kvöld?",
+    "Hvaða stafur kemur á eftir F?",
+    "Í hvernig nám fara læknar?",
     "Á hvaða ári var Ísland stofnað sem lýðveldi?",
-    "Hver eru helstu einkenni norðurljósa?"
+    "Hann Tumi fer á fætur ",
+    "Botninn er suður í ",
+    "Maðurinn drakk kaffi með ",
+    "Syngjandi sæll og ",
+    "Lögreglan hélt manninum í gíslingu í þrjá ",
+    "Þótt ótrulegt megi ",
+    "Fólkið gengur á gangstéttum og bílarnir keyra á ",
+    "Hundar gelta en kisur ",
+    "Maðurinn brosti því hann var glaður, en drengurinn var með skeifu því hann var ",
+    "Horfin eru sumarið og ",
+    "Snjókorn og regn falla úr "
 ]
 
 cloze_prompts = [
-    "Ísland er fallegasta land í heimi, því það er fullt af <mask>",
-    "Maturinn var svo góður, en ég gat ekki borðað meira vegna <mask>",
     "Ísland varð lýðveldi árið <mask>",
+    "Hann Tumi fer á fætur við fyrsta <mask>",
+    "Botninn er suður í <mask>",
+    "Maðurinn drakk kaffi með <mask>",
+    "Syngjandi sæll og <mask>",
+    "Lögreglan hélt manninum í gíslingu í þrjá <mask>",
+    "Þótt ótrulegt megi <mask>",
+    "Fólkið gengur á gangstéttum og bílarnir keyra á <mask>",
+    "Hundar gelta en kisur <mask>",
+    "Maðurinn brosti því hann var glaður, en drengurinn var með skeifu því hann var <mask>",
+    "Horfin eru sumarið og <mask>",
+    "Snjókorn og regn falla úr <mask>"
 ]
 
 

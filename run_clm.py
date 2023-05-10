@@ -6,6 +6,9 @@ import sys
 from dataclasses import dataclass, field
 from typing import Optional
 from pathlib import Path
+from sklearn.metrics.pairwise import cosine_similarity
+import torch.nn.functional as F
+
 
 import datasets
 from datasets import load_dataset, Dataset
@@ -67,19 +70,42 @@ def generate_sample(prompt, model, tokenizer, max_new_tokens=50):
     return f"'{decoded_output}'"
 
 
+def generate_sample_and_cosine_similarity(prompt, model, tokenizer, actual_text, max_new_tokens=50):
+    input_ids = tokenizer.encode(prompt, return_tensors="pt").to(model.device)
+    max_length = len(input_ids[0]) + max_new_tokens
+    output = model.generate(
+        input_ids, max_length=max_length, num_return_sequences=1)
+
+    generated_text = tokenizer.decode(output[0], skip_special_tokens=True)
+
+    # Obtain the hidden states for the generated text
+    generated_input_ids = tokenizer.encode(
+        generated_text, return_tensors="pt").to(model.device)
+    generated_output = model(generated_input_ids, output_hidden_states=True)
+    generated_text_vector = generated_output.hidden_states[-1].mean(dim=1)
+
+    # Obtain the hidden states for the actual text
+    actual_input_ids = tokenizer.encode(
+        actual_text, return_tensors="pt").to(model.device)
+    actual_output = model(actual_input_ids, output_hidden_states=True)
+    actual_text_vector = actual_output.hidden_states[-1].mean(dim=1)
+
+    similarity = F.cosine_similarity(actual_text_vector, generated_text_vector)
+
+    return generated_text, similarity.item()
+
+
 class SampleGenerationCallback(TrainerCallback):
-    def __init__(self, prompts, cloze_prompts, tokenizer, model, interval):
+    def __init__(self, prompts, test_dataset, tokenizer, model, interval, num_samples=10):
         self.prompts = prompts
-        self.cloze_prompts = cloze_prompts
+        # select first num_samples from the test dataset
+        self.test_dataset = test_dataset.select(range(num_samples))
         self.tokenizer = tokenizer
         self.model = model
         self.interval = interval
 
     def on_step_begin(self, args, state, control, **kwargs):
         if state.global_step % self.interval == 0 and state.global_step > 0:
-            # Turn off the logger temporarily
-            # logger = logging.getLogger('transformers')
-            # logger.set_verbosity_critical()
             transformers.utils.logging.set_verbosity_error()
 
             training_loss = None
@@ -91,15 +117,30 @@ class SampleGenerationCallback(TrainerCallback):
                 print(
                     f"\n**********\nTraining loss at step {state.global_step}: {training_loss}\n**********\n")
 
-            for i, prompt in enumerate(self.prompts):
+            for i, example in enumerate(self.test_dataset):
                 print(
-                    f"\n**********\nSample {i+1} at step {state.global_step}:")
-                print(generate_sample(prompt, self.model, self.tokenizer))
-            for i, cloze_prompt in enumerate(self.cloze_prompts):
-                print(f"\n**********\nCloze test {i+1}:")
-                generate_cloze_sample(cloze_prompt, self.model, self.tokenizer)
+                    f"\n{'*' * 10}\nTest sample {i+1} at step {state.global_step}:\n{'*' * 10}")
+                # convert the entire text into a string
+                full_text = self.tokenizer.decode(
+                    example['input_ids'], skip_special_tokens=True)
+                # split the string into words
+                words = full_text.split()
+                # take the first 30 words as the prompt
+                prompt_words = words[:30]
+                prompt = ' '.join(prompt_words)
+                print(f"Prompt:\n{prompt}\n{'-' * 10}")
+                # the next 50 words are the actual text
+                actual_words = words[30:60]
+                actual_text = ' '.join(actual_words)
+                print(f"Actual text:\n{actual_text}\n{'-' * 10}")
+                generated_text, similarity = generate_sample_and_cosine_similarity(
+                    prompt, self.model, self.tokenizer, actual_text)
 
-            # logger.set_verbosity_info()
+                # remove the prompt from the generated text
+                generated_text = generated_text[len(prompt):]
+                print(f"Generated text:\n{generated_text}\n{'-' * 10}")
+                print(f"Cosine similarity: {similarity}\n{'*' * 10}")
+
             transformers.utils.logging.set_verbosity_info()
 
 
@@ -518,7 +559,7 @@ def main():
         # Data collator will default to DataCollatorWithPadding, so we change it.
         data_collator=default_data_collator,
         callbacks=[SampleGenerationCallback(
-            prompts, cloze_prompts, tokenizer, model, interval=10)]
+            prompts, eval_dataset, tokenizer, model, interval=10, num_samples=5)]
     )
 
     # Training

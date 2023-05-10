@@ -1,4 +1,3 @@
-
 import logging
 import math
 import os
@@ -6,8 +5,9 @@ import sys
 from dataclasses import dataclass, field
 from typing import Optional
 from pathlib import Path
-from sklearn.metrics.pairwise import cosine_similarity
+# from sklearn.metrics.pairwise import cosine_similarity
 import torch.nn.functional as F
+import wandb
 
 
 import datasets
@@ -96,9 +96,9 @@ def generate_sample_and_cosine_similarity(prompt, model, tokenizer, actual_text,
 
 
 class SampleGenerationCallback(TrainerCallback):
+
     def __init__(self, prompts, test_dataset, tokenizer, model, interval, num_samples=10):
         self.prompts = prompts
-        # select first num_samples from the test dataset
         self.test_dataset = test_dataset.select(range(num_samples))
         self.tokenizer = tokenizer
         self.model = model
@@ -116,32 +116,34 @@ class SampleGenerationCallback(TrainerCallback):
             if training_loss is not None:
                 print(
                     f"\n**********\nTraining loss at step {state.global_step}: {training_loss}\n**********\n")
+                wandb.log({"Training Loss": training_loss,
+                          "Step": state.global_step})
 
             for i, example in enumerate(self.test_dataset):
                 print(
                     f"\n{'*' * 10}\nTest sample {i+1} at step {state.global_step}:\n{'*' * 10}")
-                # convert the entire text into a string
                 full_text = self.tokenizer.decode(
                     example['input_ids'], skip_special_tokens=True)
-                # split the string into words
                 words = full_text.split()
-                # take the first 30 words as the prompt
                 prompt_words = words[:30]
                 prompt = ' '.join(prompt_words)
                 print(f"Prompt:\n{prompt}\n{'-' * 10}")
-                # the next 50 words are the actual text
                 actual_words = words[30:60]
                 actual_text = ' '.join(actual_words)
                 print(f"Actual text:\n{actual_text}\n{'-' * 10}")
                 generated_text, similarity = generate_sample_and_cosine_similarity(
                     prompt, self.model, self.tokenizer, actual_text)
 
-                # remove the prompt from the generated text
                 generated_text = generated_text[len(prompt):]
                 print(f"Generated text:\n{generated_text}\n{'-' * 10}")
                 print(f"Cosine similarity: {similarity}\n{'*' * 10}")
 
-            transformers.utils.logging.set_verbosity_info()
+                # Log the prompt, actual text, generated text, and cosine similarity to Weights & Biases
+                wandb.log({"Prompt": prompt,
+                           "Actual Text": actual_text,
+                           "Generated Text": generated_text,
+                           "Cosine Similarity": similarity,
+                           "Step": state.global_step})
 
 
 prompts = [
@@ -164,12 +166,10 @@ prompts = [
 
 cloze_prompts = []
 
-
 # Will error if the minimal version of Transformers is not installed. Remove at your own risks.
 check_min_version("4.5.0.dev0")
 
 logger = logging.getLogger(__name__)
-
 
 MODEL_CONFIG_CLASSES = list(MODEL_FOR_CAUSAL_LM_MAPPING.keys())
 MODEL_TYPES = tuple(conf.model_type for conf in MODEL_CONFIG_CLASSES)
@@ -225,8 +225,9 @@ class ModelArguments:
 
 @dataclass
 class DataTrainingArguments:
+
     """
-    Arguments pertaining to what data we are going to input our model for training and eval.
+        Arguments pertaining to what data we are going to input our model for training and eval.
     """
 
     dataset_name: Optional[str] = field(
@@ -277,6 +278,12 @@ class DataTrainingArguments:
     preprocessing_num_workers: Optional[int] = field(
         default=None,
         metadata={"help": "The number of processes to use for the preprocessing."},
+    )
+    run_name: Optional[str] = field(
+        default=None,
+        metadata={
+            "help": "An optional descriptor for the run name. Used for wandb logging."
+        },
     )
 
     def __post_init__(self):
@@ -398,6 +405,7 @@ def main():
     # The .from_pretrained methods guarantee that only one local process can concurrently
     # download model & vocab.
    '''
+
     config_kwargs = {
         "cache_dir": model_args.cache_dir,
         "revision": model_args.model_revision,
@@ -418,8 +426,6 @@ def main():
 
     config.gradient_checkpointing = True
     config.use_cache = False
-
-    #
 
     tokenizer_kwargs = {
         "cache_dir": model_args.cache_dir,
@@ -549,6 +555,9 @@ def main():
             eval_dataset = eval_dataset.select(
                 range(data_args.max_val_samples))
 
+    run = wandb.init(project="Bloom-560m", name=training_args.run_name)
+    wandb.config.update(training_args)
+
     # Initialize our Trainer
     trainer = Trainer(
         model=model,
@@ -599,6 +608,8 @@ def main():
 
         trainer.log_metrics("eval", metrics)
         trainer.save_metrics("eval", metrics)
+
+    wandb.finish()
 
 
 def _mp_fn(index):

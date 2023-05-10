@@ -121,20 +121,7 @@ prompts = [
     "Snjókorn og regn falla úr "
 ]
 
-cloze_prompts = [
-    "Ísland varð lýðveldi árið <mask>",
-    "Hann Tumi fer á fætur við fyrsta <mask>",
-    "Botninn er suður í <mask>",
-    "Maðurinn drakk kaffi með <mask>",
-    "Syngjandi sæll og <mask>",
-    "Lögreglan hélt manninum í gíslingu í þrjá <mask>",
-    "Þótt ótrulegt megi <mask>",
-    "Fólkið gengur á gangstéttum og bílarnir keyra á <mask>",
-    "Hundar gelta en kisur <mask>",
-    "Maðurinn brosti því hann var glaður, en drengurinn var með skeifu því hann var <mask>",
-    "Horfin eru sumarið og <mask>",
-    "Snjókorn og regn falla úr <mask>"
-]
+cloze_prompts = []
 
 
 # Will error if the minimal version of Transformers is not installed. Remove at your own risks.

@@ -97,12 +97,13 @@ def generate_sample_and_cosine_similarity(prompt, model, tokenizer, actual_text,
 
 class SampleGenerationCallback(TrainerCallback):
 
-    def __init__(self, prompts, test_dataset, tokenizer, model, interval, num_samples=10):
+    def __init__(self, prompts, test_dataset, tokenizer, model, training_args, interval, num_samples=10):
         self.prompts = prompts
         self.test_dataset = test_dataset.select(range(num_samples))
         self.tokenizer = tokenizer
         self.model = model
         self.interval = interval
+        self.training_args = training_args
 
     def on_step_begin(self, args, state, control, **kwargs):
         if state.global_step % self.interval == 0 and state.global_step > 0:
@@ -116,8 +117,10 @@ class SampleGenerationCallback(TrainerCallback):
             if training_loss is not None:
                 print(
                     f"\n**********\nTraining loss at step {state.global_step}: {training_loss}\n**********\n")
-                wandb.log({"Training Loss": training_loss,
-                          "Step": state.global_step})
+
+                if self.training_args.run_name:
+                    wandb.log({"Training Loss": training_loss,
+                              "Step": state.global_step})
 
             for i, example in enumerate(self.test_dataset):
                 print(
@@ -138,12 +141,12 @@ class SampleGenerationCallback(TrainerCallback):
                 print(f"Generated text:\n{generated_text}\n{'-' * 10}")
                 print(f"Cosine similarity: {similarity}\n{'*' * 10}")
 
-                # Log the prompt, actual text, generated text, and cosine similarity to Weights & Biases
-                wandb.log({"Prompt": prompt,
-                           "Actual Text": actual_text,
-                           "Generated Text": generated_text,
-                           "Cosine Similarity": similarity,
-                           "Step": state.global_step})
+                if self.training_args.run_name:
+                    wandb.log({"Prompt": prompt,
+                               "Actual Text": actual_text,
+                               "Generated Text": generated_text,
+                               "Cosine Similarity": similarity,
+                               "Step": state.global_step})
 
 
 prompts = [
@@ -278,12 +281,6 @@ class DataTrainingArguments:
     preprocessing_num_workers: Optional[int] = field(
         default=None,
         metadata={"help": "The number of processes to use for the preprocessing."},
-    )
-    run_name: Optional[str] = field(
-        default=None,
-        metadata={
-            "help": "An optional descriptor for the run name. Used for wandb logging."
-        },
     )
 
     def __post_init__(self):
@@ -534,6 +531,9 @@ def main():
     )'''
 
     lm_datasets = datasets.load_dataset('stoddur/rmh_tokenized_512')
+    # import pdb
+    # pdb.set_trace()
+    lm_datasets = lm_datasets.shuffle(training_args.seed)
 
     if training_args.do_train:
         '''
@@ -555,8 +555,9 @@ def main():
             eval_dataset = eval_dataset.select(
                 range(data_args.max_val_samples))
 
-    run = wandb.init(project="Bloom-560m", name=training_args.run_name)
-    wandb.config.update(training_args)
+    if training_args.run_name:
+        run = wandb.init(project="Bloom-560m", name=training_args.run_name)
+        wandb.config.update(training_args)
 
     # Initialize our Trainer
     trainer = Trainer(
@@ -568,7 +569,7 @@ def main():
         # Data collator will default to DataCollatorWithPadding, so we change it.
         data_collator=default_data_collator,
         callbacks=[SampleGenerationCallback(
-            prompts, eval_dataset, tokenizer, model, interval=10, num_samples=5)]
+            prompts, eval_dataset, tokenizer, model, training_args, interval=10, num_samples=5)]
     )
 
     # Training
@@ -609,7 +610,8 @@ def main():
         trainer.log_metrics("eval", metrics)
         trainer.save_metrics("eval", metrics)
 
-    wandb.finish()
+    if training_args.run_name:
+        wandb.finish()
 
 
 def _mp_fn(index):

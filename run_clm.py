@@ -7,6 +7,7 @@ from typing import Optional
 from pathlib import Path
 # from sklearn.metrics.pairwise import cosine_similarity
 import torch.nn.functional as F
+import torch
 import wandb
 
 
@@ -97,15 +98,42 @@ def generate_sample_and_cosine_similarity(prompt, model, tokenizer, actual_text,
     return generated_text, similarity.item()
 
 
+def calculate_perplexity(actual_text, generated_text, model, tokenizer):
+    # Convert the actual and generated text back to token ids.
+    actual_ids = tokenizer.encode(actual_text, return_tensors='pt')
+    generated_ids = tokenizer.encode(generated_text, return_tensors='pt')
+
+    # Make sure the length of both tensors are the same for loss calculation
+    min_length = min(actual_ids.size(1), generated_ids.size(1))
+    actual_ids = actual_ids[:, :min_length]
+    generated_ids = generated_ids[:, :min_length]
+
+    # Move tensors to same device as model
+    actual_ids = actual_ids.to(model.device)
+    generated_ids = generated_ids.to(model.device)
+
+    # Compute the loss.
+    with torch.no_grad():
+        logits = model(actual_ids).logits
+        loss = F.cross_entropy(logits, generated_ids, reduction='mean')
+
+    # Compute the perplexity.
+    perplexity = torch.exp(loss)
+
+    return perplexity.item()  # Return as a Python float
+
+
 class SampleGenerationCallback(TrainerCallback):
 
-    def __init__(self, prompts, test_dataset, tokenizer, model, data_args, interval, num_samples=10):
+    def __init__(self, prompts, test_dataset, tokenizer, model, data_args, text_table, run, interval, num_samples=10):
         self.prompts = prompts
         self.test_dataset = test_dataset.select(range(num_samples))
         self.tokenizer = tokenizer
         self.model = model
         self.interval = interval
         self.data_args = data_args
+        self.text_table = text_table
+        self.run = run
 
     def on_step_begin(self, args, state, control, **kwargs):
         if state.global_step % self.interval == 0 and state.global_step > 0:
@@ -117,7 +145,7 @@ class SampleGenerationCallback(TrainerCallback):
                     training_loss = log['loss']
                     break
             if training_loss is not None:
-                print(
+                logger.info(
                     f"\n**********\nTraining loss at step {state.global_step}: {training_loss}\n**********\n")
 
                 if self.data_args.use_wandb:
@@ -125,30 +153,28 @@ class SampleGenerationCallback(TrainerCallback):
                               "Step": state.global_step})
 
             for i, example in enumerate(self.test_dataset):
-                print(
-                    f"\n{'*' * 10}\nTest sample {i+1} at step {state.global_step}:\n{'*' * 10}")
+                # print(
+                # f"\n{'*' * 10}\nTest sample {i+1} at step {state.global_step}:\n{'*' * 10}")
                 full_text = self.tokenizer.decode(
                     example['input_ids'], skip_special_tokens=True)
                 words = full_text.split()
                 prompt_words = words[:30]
                 prompt = ' '.join(prompt_words)
-                print(f"Prompt:\n{prompt}\n{'-' * 10}")
+                # print(f"Prompt:\n{prompt}\n{'-' * 10}")
                 actual_words = words[30:60]
                 actual_text = ' '.join(actual_words)
-                print(f"Actual text:\n{actual_text}\n{'-' * 10}")
+                # print(f"Actual text:\n{actual_text}\n{'-' * 10}")
                 generated_text, similarity = generate_sample_and_cosine_similarity(
                     prompt, self.model, self.tokenizer, actual_text)
 
                 generated_text = generated_text[len(prompt):]
-                print(f"Generated text:\n{generated_text}\n{'-' * 10}")
-                print(f"Cosine similarity: {similarity}\n{'*' * 10}")
+
+                # perplexity = calculate_perplexity(
+                #     actual_text, generated_text, self.model, self.tokenizer)
 
                 if self.data_args.use_wandb:
-                    wandb.log({"Prompt": prompt,
-                               "Actual Text": actual_text,
-                               "Generated Text": generated_text,
-                               "Cosine Similarity": similarity,
-                               "Step": state.global_step})
+                    self.text_table.add_data(
+                        i, state.global_step, prompt, actual_text, generated_text, similarity)
 
 
 prompts = [
@@ -541,8 +567,6 @@ def main():
     )'''
 
     lm_datasets = datasets.load_dataset('stoddur/rmh_tokenized_512')
-    # import pdb
-    # pdb.set_trace()
     lm_datasets = lm_datasets.shuffle(training_args.seed)
 
     if training_args.do_train:
@@ -581,6 +605,8 @@ def main():
         run = wandb.init(project=data_args.wandb_project,
                          name=training_args.run_name)
         wandb.config.update(training_args)
+        text_table = wandb.Table(
+            columns=["prompt_id", "Step", "Prompt", "Actual output", "Generated Text", "Cosine Similarity"])
 
     # Initialize our Trainer
     trainer = Trainer(
@@ -592,7 +618,7 @@ def main():
         # Data collator will default to DataCollatorWithPadding, so we change it.
         data_collator=default_data_collator,
         callbacks=[SampleGenerationCallback(
-            prompts, eval_dataset, tokenizer, model, data_args, interval=10, num_samples=5)]
+            prompts, eval_dataset, tokenizer, model, data_args, text_table, run, interval=training_args.logging_steps, num_samples=5)]
     )
 
     # Training
@@ -628,12 +654,15 @@ def main():
             eval_dataset)
         metrics["eval_samples"] = min(max_val_samples, len(eval_dataset))
         perplexity = math.exp(metrics["eval_loss"])
+        if data_args.use_wandb:
+            wandb.log({"Perplexity": perplexity})
         metrics["perplexity"] = perplexity
 
         trainer.log_metrics("eval", metrics)
         trainer.save_metrics("eval", metrics)
 
     if data_args.use_wandb:
+        run.log({"Prompt table": text_table})
         wandb.finish()
 
 

@@ -125,19 +125,69 @@ def calculate_perplexity(actual_text, generated_text, model, tokenizer):
 
 class SampleGenerationCallback(TrainerCallback):
 
-    def __init__(self, prompts, test_dataset, tokenizer, model, data_args, text_table, run, interval, num_samples=10):
+    def __init__(self, prompts, test_dataset, tokenizer, model, data_args, text_table, run, log_steps, run_eval_on_step_count=10, num_samples=10):
         self.prompts = prompts
         self.test_dataset = test_dataset.select(range(num_samples))
         self.tokenizer = tokenizer
         self.model = model
-        self.interval = interval
+        self.log_steps = log_steps
         self.data_args = data_args
         self.text_table = text_table
         self.run = run
+        self.run_eval_on_step_count = run_eval_on_step_count
 
     def on_step_begin(self, args, state, control, **kwargs):
-        if state.global_step % self.interval == 0 and state.global_step > 0:
-            transformers.utils.logging.set_verbosity_error()
+
+        transformers.utils.logging.set_verbosity_error()
+
+        if state.global_step % self.run_eval_on_step_count == 0 and state.global_step > 0:
+            # Put model in evaluation mode
+            self.model.eval()
+
+            # Initialize a variable to store total loss
+            total_loss = 0
+
+            # Loop over test_dataset
+            for example in self.test_dataset:
+
+                # Extract inputs and targets from example
+                input_ids = torch.unsqueeze(
+                    torch.tensor(example['input_ids']), 0).to(self.model.device)
+                target_ids = torch.unsqueeze(
+                    torch.tensor(example['labels']), 0).to(self.model.device)
+
+                # Compute logits
+                with torch.no_grad():
+                    outputs = self.model(input_ids)
+                    logits = outputs.logits
+
+                # Compute loss
+                loss = F.cross_entropy(
+                    logits.view(-1, logits.size(-1)), target_ids.view(-1), reduction='mean')
+
+                # Add loss to total loss
+                total_loss += loss.item()
+
+            # Compute average loss
+            avg_loss = total_loss / len(self.test_dataset)
+
+            if self.data_args.use_wandb:
+                wandb.log({"Test Loss": avg_loss,
+                           "Step": state.global_step})
+
+            # Compute perplexity
+            perplexity = torch.exp(torch.tensor(avg_loss))
+
+            # Print perplexity
+            print(f"Perplexity: {perplexity.item()}")
+            if self.data_args.use_wandb:
+                wandb.log({"Eval perplexity": perplexity.item(),
+                           "Step": state.global_step})
+
+            # Put model back in training mode
+            self.model.train()
+
+        if state.global_step % self.log_steps == 0 and state.global_step > 0:
 
             training_loss = None
             for log in reversed(state.log_history):
@@ -171,10 +221,19 @@ class SampleGenerationCallback(TrainerCallback):
 
                 # perplexity = calculate_perplexity(
                 #     actual_text, generated_text, self.model, self.tokenizer)
+                # print(f"Perplexity: {perplexity}")
 
                 if self.data_args.use_wandb:
                     self.text_table.add_data(
                         i, state.global_step, prompt, actual_text, generated_text, similarity)
+
+                    wandb.log({
+                        "Prompt": prompt,
+                        "Actual Text": actual_text,
+                        "Generated Text": generated_text,
+                        "Similarity": similarity,
+                        "Step": state.global_step
+                    })
 
 
 prompts = [
@@ -618,7 +677,7 @@ def main():
         # Data collator will default to DataCollatorWithPadding, so we change it.
         data_collator=default_data_collator,
         callbacks=[SampleGenerationCallback(
-            prompts, eval_dataset, tokenizer, model, data_args, text_table, run, interval=training_args.logging_steps, num_samples=5)]
+            prompts, eval_dataset, tokenizer, model, data_args, text_table, run, log_steps=training_args.logging_steps, run_eval_on_step_count=30, num_samples=5)]
     )
 
     # Training

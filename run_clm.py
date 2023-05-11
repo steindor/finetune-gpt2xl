@@ -30,6 +30,8 @@ from transformers import (
 from transformers.trainer_utils import get_last_checkpoint, is_main_process
 from transformers.utils import check_min_version
 
+os.environ["WANDB_DISABLED"] = "true"
+
 
 def generate_cloze_sample(prompt, model, tokenizer, max_new_tokens=5):
     # Tokenize the input prompt
@@ -97,13 +99,13 @@ def generate_sample_and_cosine_similarity(prompt, model, tokenizer, actual_text,
 
 class SampleGenerationCallback(TrainerCallback):
 
-    def __init__(self, prompts, test_dataset, tokenizer, model, training_args, interval, num_samples=10):
+    def __init__(self, prompts, test_dataset, tokenizer, model, data_args, interval, num_samples=10):
         self.prompts = prompts
         self.test_dataset = test_dataset.select(range(num_samples))
         self.tokenizer = tokenizer
         self.model = model
         self.interval = interval
-        self.training_args = training_args
+        self.data_args = data_args
 
     def on_step_begin(self, args, state, control, **kwargs):
         if state.global_step % self.interval == 0 and state.global_step > 0:
@@ -118,7 +120,7 @@ class SampleGenerationCallback(TrainerCallback):
                 print(
                     f"\n**********\nTraining loss at step {state.global_step}: {training_loss}\n**********\n")
 
-                if self.training_args.run_name:
+                if self.data_args.use_wandb:
                     wandb.log({"Training Loss": training_loss,
                               "Step": state.global_step})
 
@@ -141,7 +143,7 @@ class SampleGenerationCallback(TrainerCallback):
                 print(f"Generated text:\n{generated_text}\n{'-' * 10}")
                 print(f"Cosine similarity: {similarity}\n{'*' * 10}")
 
-                if self.training_args.run_name:
+                if self.data_args.use_wandb:
                     wandb.log({"Prompt": prompt,
                                "Actual Text": actual_text,
                                "Generated Text": generated_text,
@@ -281,6 +283,14 @@ class DataTrainingArguments:
     preprocessing_num_workers: Optional[int] = field(
         default=None,
         metadata={"help": "The number of processes to use for the preprocessing."},
+    )
+    use_wandb: Optional[bool] = field(
+        default=False,
+        metadata={"help": "Whether to use wandb for logging."},
+    )
+    wandb_project: Optional[str] = field(
+        default="Bloom-560m",
+        metadata={"help": "Wandb project name."},
     )
 
     def __post_init__(self):
@@ -555,8 +565,21 @@ def main():
             eval_dataset = eval_dataset.select(
                 range(data_args.max_val_samples))
 
-    if training_args.run_name:
-        run = wandb.init(project="Bloom-560m", name=training_args.run_name)
+    if data_args.use_wandb:
+        os.environ["WANDB_DISABLED"] = "false"
+        if training_args.run_name == "finetuned":
+            raise ValueError(
+                "--run_name is required when using wandb. Please provide a name for your run."
+            )
+
+        logger.info("Using wandb")
+        logger.info("Project: " + data_args.wandb_project)
+        logger.info("Run name: " + training_args.run_name)
+        logger.info(
+            "Use flag --wandb_project to change project name within wandb")
+
+        run = wandb.init(project=data_args.wandb_project,
+                         name=training_args.run_name)
         wandb.config.update(training_args)
 
     # Initialize our Trainer
@@ -569,7 +592,7 @@ def main():
         # Data collator will default to DataCollatorWithPadding, so we change it.
         data_collator=default_data_collator,
         callbacks=[SampleGenerationCallback(
-            prompts, eval_dataset, tokenizer, model, training_args, interval=10, num_samples=5)]
+            prompts, eval_dataset, tokenizer, model, data_args, interval=10, num_samples=5)]
     )
 
     # Training
@@ -610,7 +633,7 @@ def main():
         trainer.log_metrics("eval", metrics)
         trainer.save_metrics("eval", metrics)
 
-    if training_args.run_name:
+    if data_args.use_wandb:
         wandb.finish()
 
 

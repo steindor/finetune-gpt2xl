@@ -140,52 +140,7 @@ class SampleGenerationCallback(TrainerCallback):
 
         transformers.utils.logging.set_verbosity_error()
 
-        if state.global_step % self.run_eval_on_step_count == 0 and state.global_step > 0:
-            # Put model in evaluation mode
-            self.model.eval()
-
-            # Initialize a variable to store total loss
-            total_loss = 0
-
-            # Loop over test_dataset
-            for example in self.test_dataset:
-
-                # Extract inputs and targets from example
-                input_ids = torch.unsqueeze(
-                    torch.tensor(example['input_ids']), 0).to(self.model.device)
-                target_ids = torch.unsqueeze(
-                    torch.tensor(example['labels']), 0).to(self.model.device)
-
-                # Compute logits
-                with torch.no_grad():
-                    outputs = self.model(input_ids)
-                    logits = outputs.logits
-
-                # Compute loss
-                loss = F.cross_entropy(
-                    logits.view(-1, logits.size(-1)), target_ids.view(-1), reduction='mean')
-
-                # Add loss to total loss
-                total_loss += loss.item()
-
-            # Compute average loss
-            avg_loss = total_loss / len(self.test_dataset)
-
-            if self.data_args.use_wandb:
-                wandb.log({"Test Loss": avg_loss,
-                           "Step": state.global_step})
-
-            # Compute perplexity
-            perplexity = torch.exp(torch.tensor(avg_loss))
-
-            # Print perplexity
-            print(f"Perplexity: {perplexity.item()}")
-            if self.data_args.use_wandb:
-                wandb.log({"Eval perplexity": perplexity.item(),
-                           "Step": state.global_step})
-
-            # Put model back in training mode
-            self.model.train()
+        self.model.eval()
 
         if state.global_step % self.log_steps == 0 and state.global_step > 0:
 
@@ -234,6 +189,8 @@ class SampleGenerationCallback(TrainerCallback):
                         "Similarity": similarity,
                         "Step": state.global_step
                     })
+
+        self.model.train()
 
 
 prompts = [
@@ -625,8 +582,10 @@ def main():
         load_from_cache_file=not data_args.overwrite_cache,
     )'''
 
-    lm_datasets = datasets.load_dataset('stoddur/rmh_tokenized_512')
-    lm_datasets = lm_datasets.shuffle(training_args.seed)
+    lm_datasets = datasets.load_dataset('stoddur/rmh_tokenized_512_train')
+    # Dataset is already toknenized and shuffled
+    lm_datasets = lm_datasets.train_test_split(
+        test_size=0.05, seed=training_args.seed)
 
     if training_args.do_train:
         '''
@@ -677,7 +636,16 @@ def main():
         # Data collator will default to DataCollatorWithPadding, so we change it.
         data_collator=default_data_collator,
         callbacks=[SampleGenerationCallback(
-            prompts, eval_dataset, tokenizer, model, data_args, text_table, run, log_steps=training_args.logging_steps, run_eval_on_step_count=30, num_samples=5)]
+            prompts,
+            eval_dataset,
+            tokenizer,
+            model,
+            data_args,
+            text_table if data_args.use_wandb else None,
+            run if data_args.use_wandb else None,
+            log_steps=training_args.logging_steps,
+            run_eval_on_step_count=30,
+            num_samples=5)]
     )
 
     # Training
@@ -688,6 +656,7 @@ def main():
             checkpoint = model_args.model_name_or_path
         else:
             checkpoint = None
+
         train_result = trainer.train(resume_from_checkpoint=checkpoint)
         trainer.save_model()  # Saves the tokenizer too for easy upload
 
@@ -716,6 +685,9 @@ def main():
         if data_args.use_wandb:
             wandb.log({"Perplexity": perplexity})
         metrics["perplexity"] = perplexity
+
+        # import pdb
+        # pdb.set_trace()
 
         trainer.log_metrics("eval", metrics)
         trainer.save_metrics("eval", metrics)

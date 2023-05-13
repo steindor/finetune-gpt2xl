@@ -584,7 +584,7 @@ def main():
 
     lm_datasets = datasets.load_dataset('stoddur/rmh_tokenized_512_train')
     # Dataset is already toknenized and shuffled
-    lm_datasets = lm_datasets.train_test_split(
+    lm_datasets = lm_datasets["train"].train_test_split(
         test_size=0.05, seed=training_args.seed)
 
     if training_args.do_train:
@@ -602,7 +602,7 @@ def main():
         if "validation" not in tokenized_datasets:
             raise ValueError("--do_eval requires a validation dataset")
         '''
-        eval_dataset = lm_datasets["validation"]
+        eval_dataset = lm_datasets["test"]
         if data_args.max_val_samples is not None:
             eval_dataset = eval_dataset.select(
                 range(data_args.max_val_samples))

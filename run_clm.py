@@ -584,8 +584,8 @@ def main():
 
     lm_datasets = datasets.load_dataset('stoddur/rmh_tokenized_512_train')
     # Dataset is already toknenized and shuffled
-    lm_datasets = lm_datasets['train'].train_test_split(
-        test_size=0.01, seed=training_args.seed)
+    # lm_datasets = lm_datasets['train'].train_test_split(
+    #     test_size=0.01, seed=training_args.seed)
 
     if training_args.do_train:
         '''
@@ -643,9 +643,9 @@ def main():
             data_args,
             text_table if data_args.use_wandb else None,
             run if data_args.use_wandb else None,
-            log_steps=1580,
+            log_steps=training_args.logging_steps,
             run_eval_on_step_count=30,
-            num_samples=5)]
+            num_samples=10)]
     )
 
     # Training

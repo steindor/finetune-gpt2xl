@@ -581,8 +581,9 @@ def main():
         num_proc=data_args.preprocessing_num_workers,
         load_from_cache_file=not data_args.overwrite_cache,
     )'''
-
-    lm_datasets = datasets.load_dataset('stoddur/rmh_tokenized_512_train')
+    import os
+    lm_datasets = datasets.load_dataset(
+        'stoddur/rmh_tokenized_512_train', num_proc=os.cpu_count())
     # Dataset is already toknenized and shuffled
     # lm_datasets = lm_datasets['train'].train_test_split(
     #     test_size=0.01, seed=training_args.seed)

@@ -125,9 +125,9 @@ def calculate_perplexity(actual_text, generated_text, model, tokenizer):
 
 class SampleGenerationCallback(TrainerCallback):
 
-    def __init__(self, prompts, test_dataset, tokenizer, model, data_args, text_table, run, log_steps, run_eval_on_step_count=10, num_samples=10):
+    def __init__(self, prompts, train_dataset, tokenizer, model, data_args, text_table, run, log_steps, run_eval_on_step_count=10, num_samples=10):
         self.prompts = prompts
-        self.test_dataset = test_dataset.select(range(num_samples))
+        self.train_dataset = train_dataset.select(range(num_samples))
         self.tokenizer = tokenizer
         self.model = model
         self.log_steps = log_steps
@@ -157,7 +157,7 @@ class SampleGenerationCallback(TrainerCallback):
                     wandb.log({"Training Loss": training_loss,
                               "Step": state.global_step})
 
-            for i, example in enumerate(self.test_dataset):
+            for i, example in enumerate(self.train_dataset):
                 # print(
                 # f"\n{'*' * 10}\nTest sample {i+1} at step {state.global_step}:\n{'*' * 10}")
                 full_text = self.tokenizer.decode(
@@ -582,11 +582,9 @@ def main():
         load_from_cache_file=not data_args.overwrite_cache,
     )'''
 
+    # Dataset is already toknenized and shuffled
     lm_datasets = datasets.load_dataset(
         'stoddur/rmh_tokenized_512_train', num_proc=os.cpu_count())
-    # Dataset is already toknenized and shuffled
-    # lm_datasets = lm_datasets['train'].train_test_split(
-    #     test_size=0.01, seed=training_args.seed)
 
     if training_args.do_train:
         '''
@@ -603,7 +601,7 @@ def main():
         if "validation" not in tokenized_datasets:
             raise ValueError("--do_eval requires a validation dataset")
         '''
-        eval_dataset = lm_datasets["test"]
+        eval_dataset = None  # lm_datasets["test"]
         if data_args.max_val_samples is not None:
             eval_dataset = eval_dataset.select(
                 range(data_args.max_val_samples))
@@ -638,7 +636,7 @@ def main():
         data_collator=default_data_collator,
         callbacks=[SampleGenerationCallback(
             prompts,
-            eval_dataset,
+            train_dataset,
             tokenizer,
             model,
             data_args,

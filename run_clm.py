@@ -304,6 +304,12 @@ class DataTrainingArguments:
             "value if set."
         },
     )
+    do_eval: Optional[bool] = field(
+        default=False,
+        metadata={
+            "help": "Whether to run eval on the validation set or not."
+        },
+    )
 
     block_size: Optional[int] = field(
         default=None,
